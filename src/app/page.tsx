@@ -1,27 +1,35 @@
 "use client";
 
-import { signIn, signOut, useSession } from "next-auth/react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { UserButton } from "./features/auth/components/user-button";
+import { signIn } from "next-auth/react";
 
 const HomePage = () => {
-  const { data: user } = useSession();
-
-  if (user) {
-    return (
-      <div className="flex flex-col gap-2">
-        <p>{JSON.stringify(user)}</p>
-        <button onClick={() => signOut()}>
-          sign out
-        </button>
-      </div>
-    )
-  }
-
   return (
-    <button
-      onClick={() => signIn("github")}
-    >
-      by github
-    </button>
+    <div className="flex flex-col gap-4 p-8">
+      <div className="flex gap-4">
+        <Button variant="primary">
+          Primary
+        </Button>
+        <Button variant="foreground">
+          Foreground
+        </Button>
+        <Button variant="outline">
+          Outline
+        </Button>
+        <Button variant="secondary">
+          Secondary
+        </Button>
+      </div>
+      <Input placeholder="Test" />
+      <div className="flex justify-end">
+        <UserButton />
+      </div>
+      <button onClick={() => signIn("github")}>
+        login
+      </button>
+    </div>
   )
 }
  
