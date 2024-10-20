@@ -23,8 +23,6 @@ export const UserButton = () => {
     const router = useRouter();
     const { data: session } = useSession();
 
-    console.log(session)
-
     if (!session || !session.user) return null;
 
     return (

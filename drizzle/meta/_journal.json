@@ -8,6 +8,13 @@
       "when": 1729355456484,
       "tag": "0000_known_polaris",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1729363898846,
+      "tag": "0001_graceful_oracle",
+      "breakpoints": true
     }
   ]
 }
