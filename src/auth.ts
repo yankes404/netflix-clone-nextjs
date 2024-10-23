@@ -18,8 +18,8 @@ declare module "next-auth" {
       name: string;
       email: string;
       image: string;
+      premium: boolean;
     };
-    premium: boolean;
   }
 }
 
@@ -74,8 +74,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }
   },
   callbacks: {
-    async session({ session }) {
-      session.premium = false;  
+    async session({ session, token }) {
+      if (token && token.sub) {
+        session.user.id = token.sub;
+      }
+      session.user.premium = false;  
 
       return session;
     },

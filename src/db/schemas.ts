@@ -1,5 +1,5 @@
+import { ProfileImage } from "@/features/profiles/types";
 import {
-  boolean,
   timestamp,
   pgTable,
   text,
@@ -41,4 +41,25 @@ export const accounts = pgTable(
       columns: [account.provider, account.providerAccountId],
     }),
   })
+);
+
+export const profiles = pgTable(
+  "profile",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    createdAt: timestamp("createdAt").defaultNow(),
+    image: text("image", { enum: [
+      ProfileImage.RED,
+      ProfileImage.BLUE,
+      ProfileImage.YELLOW,
+      ProfileImage.GREEN,
+      ProfileImage.GRAY,
+    ] })
+  }
 );

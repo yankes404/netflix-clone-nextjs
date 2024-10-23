@@ -1,9 +1,12 @@
+import { eq } from "drizzle-orm";
 import { auth } from "./auth";
+import { profiles as profilesSchema } from "./db/schemas";
+import { db } from "./db/utils";
 import { API_ROUTE_PREFIX, AUTH_ROUTES, DEFAULT_LOGIN_REDIRECT, PUBLIC_ROUTES } from "./routes";
 
-export default auth((req) => {
+export default auth(async(req) => {
     const { nextUrl } = req;
-    const isLoggedIn = !!req.auth;
+    const isLoggedIn = !!req.auth && req.auth.user;
 
     const isApiRoute = nextUrl.pathname.startsWith(API_ROUTE_PREFIX);
     const isPublicRoute = PUBLIC_ROUTES.includes(nextUrl.pathname);
@@ -29,6 +32,16 @@ export default auth((req) => {
         }
             
         return Response.redirect(url);
+    }
+
+    if ((!isPublicRoute || (nextUrl.pathname === "/" && !!req.auth)) && req.auth) {
+        const profiles = await db.select()
+            .from(profilesSchema)
+            .where(eq(profilesSchema.userId, req.auth.user.id));
+
+        if (!profiles[0] && nextUrl.pathname !== "/create-profile") {
+            return Response.redirect(new URL("/create-profile?first-profile=true", nextUrl))
+        }
     }
 });
 
