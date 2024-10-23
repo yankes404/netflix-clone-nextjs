@@ -1,49 +1,31 @@
-"use client";
+import { useRouter, useSearchParams } from "next/navigation"
+import { useMutation } from "@tanstack/react-query"
+import { toast } from "sonner"
 
-import { useMutation } from "@tanstack/react-query";
-import { InferRequestType, InferResponseType } from "hono";
+import { z } from "zod"
 
-import { client } from "@/lib/rpc";
-import { toast } from "sonner";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes"
 
-type ResponseType = InferResponseType<typeof client.api.accounts.login.$post>;
-type RequestType = InferRequestType<typeof client.api.accounts.login.$post>;
+import { loginSchema } from "../schemas"
+import { login } from "../actions"
 
 export const useLogin = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    const [callbackUrl, setCallbackUrl] = useState(DEFAULT_LOGIN_REDIRECT);
-
-    const searchCallbackUrl = searchParams.get("callbackUrl");
-
-    useEffect(() => {
-        if (searchCallbackUrl) {
-            setCallbackUrl(searchCallbackUrl);
-        }
-    }, [searchCallbackUrl]);
-
-    const mutation = useMutation<
-        ResponseType,
-        Error,
-        RequestType
-    >({
-        mutationFn: async({ json }) => {
-            const response = await client.api.accounts.login.$post({ json });
-        
-            const jsonRes = await response.json();
-
-            return jsonRes;
-        },
+    const mutation = useMutation({
+        mutationFn: async (
+            values: z.infer<typeof loginSchema>
+        ) => await login(values),
         onSuccess: (data) => {
-            if (!data.error) {
+            if (data?.success) {
                 toast.success("Logged in");
-                router.push(callbackUrl);
+                router.push(searchParams.get("callbackUrl") ?? DEFAULT_LOGIN_REDIRECT);
             }
         },
+        onError: () => {
+            toast.error("Something went wrong");
+        }
     });
 
     return mutation;

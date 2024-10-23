@@ -51,7 +51,7 @@ export const CreateProfileForm = () => {
     const firstProfile = !!searchParams.get("first-profile");
 
     const onSubmit = (values: FormType) => {
-        mutate({ json: { ...values, userId: session.user.id } });
+        mutate({ ...values, userId: session.user.id })
     }
 
     return (

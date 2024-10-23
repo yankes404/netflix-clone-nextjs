@@ -1,4 +1,3 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { CreateProfileForm } from "@/features/profiles/components/create-profile-form"
 
 export const CreateProfileClient = () => {

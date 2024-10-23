@@ -40,6 +40,7 @@ export default auth(async(req) => {
             .where(eq(profilesSchema.userId, req.auth.user.id));
 
         if (!profiles[0] && nextUrl.pathname !== "/create-profile") {
+            console.log("test")
             return Response.redirect(new URL("/create-profile?first-profile=true", nextUrl))
         }
     }

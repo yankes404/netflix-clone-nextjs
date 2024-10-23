@@ -1,36 +1,27 @@
-"use client";
+import { useRouter } from "next/navigation"
+import { useMutation } from "@tanstack/react-query"
+import { toast } from "sonner"
 
-import { useMutation } from "@tanstack/react-query";
-import { InferRequestType, InferResponseType } from "hono";
+import { z } from "zod"
 
-import { client } from "@/lib/rpc";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-
-type ResponseType = InferResponseType<typeof client.api.accounts.register.$post>;
-type RequestType = InferRequestType<typeof client.api.accounts.register.$post>;
+import { registerSchema } from "../schemas"
+import { register } from "../actions"
 
 export const useRegister = () => {
     const router = useRouter();
 
-    const mutation = useMutation<
-        ResponseType,
-        Error,
-        RequestType
-    >({
-        mutationFn: async({ json }) => {
-            const response = await client.api.accounts.register.$post({ json });
-        
-            const jsonRes = await response.json();
-
-            return jsonRes;
-        },
+    const mutation = useMutation({
+        mutationFn: async (
+            values: z.infer<typeof registerSchema>
+        ) => await register(values),
         onSuccess: (data) => {
-            if (!data.error) {
-                toast.success("Registered");
-                router.push("/");
+            if (data?.success) {
+                router.push("/create-profile?first-profile=true");
             }
         },
+        onError: () => {
+            toast.error("Something went wrong");
+        }
     });
 
     return mutation;

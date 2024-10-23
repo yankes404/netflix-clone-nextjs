@@ -1,34 +1,27 @@
-import { client } from "@/lib/rpc";
+import { useRouter } from "next/navigation"
 import { useMutation } from "@tanstack/react-query"
-import { InferRequestType, InferResponseType } from "hono";
 
-type ResponseType = InferResponseType<typeof client.api.profiles.$post, 200>;
-type RequestType = InferRequestType<typeof client.api.profiles.$post>;
+import { z } from "zod"
+import { toast } from "sonner"
 
-const res: ResponseType = { success: true };
+import { createProfileSchema } from "../schemas"
+import { createProfile } from "../actions"
 
 export const useCreateProfile = () => {
-    const mutation = useMutation<
-        ResponseType,
-        Error,
-        RequestType
-    >({
-        mutationFn: async ({ json }) => {
-            const response = await client.api.profiles.$post({ json });
-            // const jsonRes = await response.json();
+    const router = useRouter();
 
-            // if (!response.ok) {
-            //     const error = 'error' in jsonRes ? jsonRes.error : "Something went wrong!";
-            //     throw new Error(error);
-            // }
-
-            return await response.json();
-        },
-        onSettled: (data) => {
-            console.log(data)
-            if (data) {
+    const mutation = useMutation({
+        mutationFn: async (
+            values: z.infer<typeof createProfileSchema>
+        ) => await createProfile(values),
+        onSuccess: (data) => {
+            if (data?.profile) {
+                router.push(`/?profile-id=${data.profile.id}`);
             }
         },
+        onError: () => {
+            toast.error("Something went wrong")
+        }
     });
 
     return mutation;

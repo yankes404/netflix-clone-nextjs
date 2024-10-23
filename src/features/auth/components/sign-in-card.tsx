@@ -71,9 +71,9 @@ export const SignInCard = ()  => {
     const onSubmit = (values: FormType) => {
         setError(null);
 
-        mutate({ json: values }, {
+        mutate(values, {
             onSuccess: (data) => {
-                setError(data.error);
+                setError(data.error ?? null);
 
                 if (!data.error) {
                     form.reset();
