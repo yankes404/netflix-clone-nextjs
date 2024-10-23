@@ -63,3 +63,18 @@ export const profiles = pgTable(
     ] }).notNull()
   }
 );
+
+export const subscriptions = pgTable(
+  "subscription",
+  {
+    id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    type: text("type", { enum: ["basic", "family"] }),
+    createdAt: timestamp("createdAt").defaultNow(),
+    expiresAt: timestamp("expiresAt")
+  }
+)
