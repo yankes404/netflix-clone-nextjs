@@ -2,7 +2,7 @@ import { CreateProfileForm } from "@/features/profiles/components/create-profile
 
 export const CreateProfileClient = () => {
     return (
-        <div className="w-screen h-screen p-4 flex flex-col justify-center items-center">
+        <div className="w-full flex justify-center mt-8">
             <CreateProfileForm />
         </div>
     )

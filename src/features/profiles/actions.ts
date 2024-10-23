@@ -37,9 +37,22 @@ export const createProfile = async (
 }
 
 export const getProfiles = async (userId: string) => {
-    const userProfiles = await db.select()
+    const userProfiles = await db.select({
+        id: profiles.id,
+        name: profiles.name,
+        image: profiles.image
+    })
         .from(profiles)
         .where(eq(profiles.userId, userId));
 
     return userProfiles;
+}
+
+export const getProfile = async (profileId: string) => {
+    const userProfiles = await db.select()
+        .from(profiles)
+        .where(eq(profiles.id, profileId))
+        .limit(1);
+
+    return userProfiles[0];
 }

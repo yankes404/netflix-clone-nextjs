@@ -1,6 +1,5 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,14 +28,22 @@ import { ProfileImage } from "../types";
 import { useSession } from "next-auth/react";
 import { useCreateProfile } from "../api/use-create-profile";
 import { LoaderCircleIcon } from "lucide-react";
+import { useGetProfiles } from "../api/use-get-profiles";
+import { useUserId } from "@/features/auth/api/use-user-id";
+import { useMemo } from "react";
+import { useRouter } from "next/navigation";
 
 type FormType = z.infer<typeof createProfileSchema>;
 
 export const CreateProfileForm = () => {
+    const router = useRouter();
+
+    const userId = useUserId();
+
     const { mutate, isPending } = useCreateProfile();
+    const { data: profiles, isLoading: isLoadingProfiles } = useGetProfiles(userId);
 
     const { data: session } = useSession();
-    const searchParams = useSearchParams();
 
     const form = useForm<FormType>({
         resolver: zodResolver(createProfileSchema),
@@ -46,9 +53,19 @@ export const CreateProfileForm = () => {
         }
     });
 
+    const firstProfile = useMemo(() => profiles ? !profiles.length : false, [profiles, isLoadingProfiles]);
+
     if (!session || !session.user) return null;
 
-    const firstProfile = !!searchParams.get("first-profile");
+    if (isLoadingProfiles) {
+        return (
+            <Card className="w-full lg:w-[550px]">
+                <CardHeader>
+                    <LoaderCircleIcon className="size-4 animate-spin text-muted-foreground mx-auto" />
+                </CardHeader>
+            </Card>
+        )
+    }
 
     const onSubmit = (values: FormType) => {
         mutate({ ...values, userId: session.user.id })
@@ -110,13 +127,14 @@ export const CreateProfileForm = () => {
                             )}
                         />
                         <div className="w-full flex flex-wrap gap-2 mt-2">
-                            {firstProfile && (
+                            {!firstProfile && (
                                 <Button
                                     size="lg"
                                     variant="outline"
                                     type="button"
                                     className="w-full lg:w-auto"
                                     disabled={isPending}
+                                    onClick={router.back}
                                 >
                                     Cancel
                                 </Button>

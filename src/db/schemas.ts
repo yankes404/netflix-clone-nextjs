@@ -60,6 +60,6 @@ export const profiles = pgTable(
       ProfileImage.YELLOW,
       ProfileImage.GREEN,
       ProfileImage.GRAY,
-    ] })
+    ] }).notNull()
   }
 );

@@ -16,7 +16,7 @@ export const useRegister = () => {
         ) => await register(values),
         onSuccess: (data) => {
             if (data?.success) {
-                router.push("/create-profile?first-profile=true");
+                router.push("/create-profile");
             }
         },
         onError: () => {
