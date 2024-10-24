@@ -1,9 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
-import { LogOutIcon, UserIcon, UsersIcon } from "lucide-react";
+import { LogOutIcon, SettingsIcon, UsersIcon } from "lucide-react";
 
 import {
     DropdownMenu,
@@ -52,7 +51,7 @@ export const UserButton = () => {
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="outline-none rounded-sm">
+            <DropdownMenuTrigger className="outline-none rounded-sm drop-shadow-lg">
                 <Avatar className="size-8 rounded-sm">
                     <AvatarImage
                         src={getProfileImage(profile.image)}
@@ -73,8 +72,8 @@ export const UserButton = () => {
                     onClick={() => router.push("/settings")}
                 >
                     <div className="flex items-center gap-1.5">
-                        <UserIcon className="size-4 mr-0" />
-                        Account
+                        <SettingsIcon className="size-4 mr-0" />
+                        Settings
                     </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem
@@ -82,7 +81,7 @@ export const UserButton = () => {
                 >
                     <div className="flex items-center gap-1.5">
                         <UsersIcon className="size-4 mr-0" />
-                        Switch User
+                        Switch Profile
                     </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem

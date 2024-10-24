@@ -74,3 +74,17 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.hero-logo {
+  transform-origin: bottom left;
+  animation: heroLogo 500ms ease-in-out;
+}
+
+@keyframes heroLogo {
+  from {
+    transform: scale(125%);
+  }
+  to {
+    transform: scale(100%);
+  }
+}
