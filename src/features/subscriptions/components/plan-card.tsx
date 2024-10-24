@@ -7,13 +7,15 @@ interface Props {
     price: number;
     features: string[];
     onSubscribe?: () => void;
+    disabled?: boolean;
 }
 
 export const PlanCard = ({
     name,
     price,
     features,
-    onSubscribe
+    onSubscribe,
+    disabled
 }: Props) => {
     return (
         <div className="w-full lg:w-[325px] p-4 bg-neutral-900 rounded-md">
@@ -36,6 +38,7 @@ export const PlanCard = ({
                 size="lg"
                 className="w-full"
                 onClick={onSubscribe}
+                disabled={disabled}
             >
                 Subscribe for ${(price / 100).toLocaleString("en-US")}
             </Button>

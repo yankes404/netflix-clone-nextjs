@@ -1,4 +1,5 @@
 import { ProfileImage } from "@/features/profiles/types";
+import { SubscriptionType } from "@/features/subscriptions/types";
 import {
   timestamp,
   pgTable,
@@ -73,8 +74,11 @@ export const subscriptions = pgTable(
     userId: text("userId")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
-    type: text("type", { enum: ["basic", "family"] }),
+    type: text("type", { enum: [
+      SubscriptionType.BASIC,
+      SubscriptionType.FAMILY,
+    ] }),
     createdAt: timestamp("createdAt").defaultNow(),
-    expiresAt: timestamp("expiresAt")
+    expiresAt: timestamp("expiresAt").notNull(),
   }
 )

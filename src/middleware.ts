@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm";
 import { auth } from "./auth";
 import { profiles as profilesSchema } from "./db/schemas";
 import { db } from "./db/utils";
-import { API_ROUTE_PREFIX, AUTH_ROUTES, DEFAULT_LOGIN_REDIRECT, PUBLIC_ROUTES } from "./routes";
+import { API_ROUTE_PREFIX, AUTH_ROUTES, DEFAULT_LOGIN_REDIRECT, PREMIUM_ROUTES, PUBLIC_ROUTES } from "./routes";
 
 export default auth(async(req) => {
     const { nextUrl } = req;
@@ -40,7 +40,15 @@ export default auth(async(req) => {
             .where(eq(profilesSchema.userId, req.auth.user.id));
 
         if (!profiles[0] && nextUrl.pathname !== "/create-profile") {
-            return Response.redirect(new URL("/create-profile", nextUrl))
+            return Response.redirect(new URL("/create-profile", nextUrl));
+        }
+
+        if (PREMIUM_ROUTES.includes(nextUrl.pathname) && !req.auth.user.premium) {
+            return Response.redirect(new URL("/choose-plan", nextUrl));
+        }
+        
+        if (nextUrl.pathname === "/choose-plan" && req.auth.user.premium) {
+            return Response.redirect(new URL("/", nextUrl));
         }
     }
 });

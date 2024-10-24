@@ -10,6 +10,7 @@ import { eq } from "drizzle-orm";
 import "next-auth";
 import { loginSchema } from "./features/auth/schemas"
 import bcrypt from "bcryptjs";
+import { getUserSubscription } from "./features/subscriptions/utils"
 
 declare module "next-auth" {
   interface Session {
@@ -77,9 +78,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async session({ session, token }) {
       if (token && token.sub) {
         session.user.id = token.sub;
+        const subscription = await getUserSubscription(token.sub);
+        session.user.premium = !!subscription;
       }
-      session.user.premium = false;  
-
       return session;
     },
   },
