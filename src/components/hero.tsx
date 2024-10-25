@@ -17,23 +17,16 @@ export const Hero = () => {
                 <Image
                     src="/series-and-movies/logos/FastAndFurious9.webp"
                     alt="Fast and Furious 9"
-                    width={324}
-                    height={96}
+                    width={514}
+                    height={126}
                     className="hero-logo"
                 />
-                <div className="mt-8 flex gap-3">
+                <div className="mt-14 flex gap-3">
                     <Button
                         size="lg"
                     >
                         <PlayIcon />
                         Play
-                    </Button>
-                    <Button
-                        size="lg"
-                        variant="secondary"
-                    >
-                        <InfoCircledIcon />
-                        More Info
                     </Button>
                 </div>
             </div>
