@@ -19,7 +19,25 @@ export function formatSeconds (seconds: number): string {
 
   const hoursStr = hours > 0 ? `${hours}h` : '';
   const minutesStr = minutes > 0 ? `${minutes}m` : '';
-  const secondsStr = secs > 0 ? `${secs}s` : '';
+  const secondsStr = secs > 0 ? `${secs.toFixed(0)}s` : '';
 
   return [hoursStr, minutesStr, secondsStr].filter(Boolean).join(' ');
+}
+
+export function formatSecondsTwo (seconds: number): string {
+  const roundedSeconds = Math.round(seconds);
+  const hours = Math.floor(roundedSeconds / 3600);
+  const minutes = Math.floor((roundedSeconds % 3600) / 60);
+  const secs = roundedSeconds % 60;
+
+  if (hours > 0) {
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  } else {
+    return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  }
+}
+
+export function isNumber (value: number) {
+  if (!isNaN(value) && typeof value === "number") return true;
+  else return false;
 }
