@@ -2,7 +2,7 @@
 
 import { Header } from "@/components/header";
 import { Hero } from "@/components/hero";
-import { MovieCard } from "@/features/videos/components/movie-card";
+import { TrackCard } from "@/features/tracks/components/track-card";
 import Link from "next/link";
 
 export const Client = () => {
@@ -11,56 +11,56 @@ export const Client = () => {
             <Header />
             <Hero />
             <div className="w-screen max-w-screen-2xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 pb-16 px-4 -mt-6">
-                <MovieCard
+                <TrackCard
                     id="fast-and-furious-9"
                     title="Fast and Furious 9"
                     lenght={5040}
                     image={"/series-and-movies/backgrounds/FastAndFurious9.webp"}
                     tags={["Action", "Drama"]}
                 />
-                <MovieCard
+                <TrackCard
                     id="fast-and-furious-9"
                     title="Fast and Furious 9"
                     lenght={5040}
                     image={"/series-and-movies/backgrounds/FastAndFurious9.webp"}
                     tags={["Action", "Drama"]}
                 />
-                <MovieCard
+                <TrackCard
                     id="fast-and-furious-9"
                     title="Fast and Furious 9"
                     lenght={5040}
                     image={"/series-and-movies/backgrounds/FastAndFurious9.webp"}
                     tags={["Action", "Drama"]}
                 />
-                <MovieCard
+                <TrackCard
                     id="fast-and-furious-9"
                     title="Fast and Furious 9"
                     lenght={5040}
                     image={"/series-and-movies/backgrounds/FastAndFurious9.webp"}
                     tags={["Action", "Drama"]}
                 />
-                <MovieCard
+                <TrackCard
                     id="fast-and-furious-9"
                     title="Fast and Furious 9"
                     lenght={5040}
                     image={"/series-and-movies/backgrounds/FastAndFurious9.webp"}
                     tags={["Action", "Drama"]}
                 />
-                <MovieCard
+                <TrackCard
                     id="fast-and-furious-9"
                     title="Fast and Furious 9"
                     lenght={5040}
                     image={"/series-and-movies/backgrounds/FastAndFurious9.webp"}
                     tags={["Action", "Drama"]}
                 />
-                <MovieCard
+                <TrackCard
                     id="fast-and-furious-9"
                     title="Fast and Furious 9"
                     lenght={5040}
                     image={"/series-and-movies/backgrounds/FastAndFurious9.webp"}
                     tags={["Action", "Drama"]}
                 />
-                <MovieCard
+                <TrackCard
                     id="fast-and-furious-9"
                     title="Fast and Furious 9"
                     lenght={5040}

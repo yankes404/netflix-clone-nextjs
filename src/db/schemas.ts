@@ -1,5 +1,6 @@
 import { ProfileImage } from "@/features/profiles/types";
 import { SubscriptionType } from "@/features/subscriptions/types";
+import { TrackType } from "@/features/tracks/types";
 import {
   timestamp,
   pgTable,
@@ -80,5 +81,46 @@ export const subscriptions = pgTable(
     ] }),
     createdAt: timestamp("createdAt").defaultNow(),
     expiresAt: timestamp("expiresAt").notNull(),
+  }
+)
+
+export const tracks = pgTable(
+  "track",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    type: text("type", { enum: [
+      TrackType.MOVIE,
+      TrackType.SERIE,
+    ] }).notNull(),
+    title: text("title").notNull(),
+    description: text("description").notNull(),
+    year: integer("year")
+      .$defaultFn(() => new Date().getFullYear())
+      .notNull(),
+    ageLimit: text("ageLimit", { enum: ["7+", "12+", "16+", "18+"] }),
+
+    // Serie Data
+    seasons: integer("seasons"),
+
+    // Movie Data
+    path: text("path")
+  }
+)
+
+export const episodes = pgTable(
+  "episode",
+  {
+    id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+    trackId: text("trackId")
+      .notNull()
+      .references(() => tracks.id, { onDelete: "cascade" }),
+    title: text("title").notNull(),
+    description: text("description").notNull(),
+    path: text("path"),
+    season: integer("season").notNull()
   }
 )
