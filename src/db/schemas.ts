@@ -105,7 +105,10 @@ export const tracks = pgTable(
     seasons: integer("seasons"),
 
     // Movie Data
-    path: text("path")
+    path: text("path"),
+
+    logo: text("logo").notNull(),
+    poster: text("poster").notNull()
   }
 )
 
@@ -122,5 +125,28 @@ export const episodes = pgTable(
     description: text("description").notNull(),
     path: text("path"),
     season: integer("season").notNull()
+  }
+)
+
+export const watchTimes = pgTable(
+  "watch_time",
+  {
+    id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+    profileId: text("profileId")
+      .notNull()
+      .references(() => profiles.id, { onDelete: "cascade" })
+      .notNull(),
+    trackId: text("trackId")
+      .notNull()
+      .references(() => tracks.id, { onDelete: "cascade" })
+      .notNull(),
+    episodeId: text("episodeId")
+      .references(() => episodes.id, { onDelete: "cascade" }),
+    time: integer("time")
+      .default(0)
+      .notNull(),
+    updatedAt: timestamp("updatedAt").defaultNow()
   }
 )

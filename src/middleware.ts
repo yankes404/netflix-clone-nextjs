@@ -1,8 +1,6 @@
-import { eq } from "drizzle-orm";
 import { auth } from "./auth";
-import { profiles as profilesSchema } from "./db/schemas";
-import { db } from "./db/utils";
-import { API_ROUTE_PREFIX, AUTH_ROUTES, DEFAULT_LOGIN_REDIRECT, PREMIUM_ROUTES, PUBLIC_ROUTES } from "./routes";
+import { API_ROUTE_PREFIX, AUTH_ROUTES, CHOOSE_PROFILE_ROUTE, DEFAULT_LOGIN_REDIRECT, PREMIUM_ROUTES, PUBLIC_ROUTES } from "./routes";
+import { getProfiles } from "./features/profiles/actions";
 
 export default auth(async(req) => {
     const { nextUrl } = req;
@@ -35,15 +33,18 @@ export default auth(async(req) => {
     }
 
     if ((!isPublicRoute || (nextUrl.pathname === "/" && !!req.auth)) && req.auth) {
-        const profiles = await db.select()
-            .from(profilesSchema)
-            .where(eq(profilesSchema.userId, req.auth.user.id));
-
+        const profiles = await getProfiles(req.auth.user.id);
+            
         if (!profiles[0] && nextUrl.pathname !== "/create-profile") {
+            console.log(profiles[0], nextUrl.pathname)
             return Response.redirect(new URL("/create-profile", nextUrl));
         }
 
-        if (PREMIUM_ROUTES.includes(nextUrl.pathname) && !req.auth.user.premium) {
+        if (nextUrl.pathname !== CHOOSE_PROFILE_ROUTE && nextUrl.pathname !== "/create-profile" && !req.auth.user.profileId) {
+            return Response.redirect(new URL(CHOOSE_PROFILE_ROUTE, nextUrl));
+        }
+
+        if (PREMIUM_ROUTES.includes(nextUrl.pathname) && !req.auth.user.premium && nextUrl.pathname !== "/choose-plan") {
             return Response.redirect(new URL("/choose-plan", nextUrl));
         }
         

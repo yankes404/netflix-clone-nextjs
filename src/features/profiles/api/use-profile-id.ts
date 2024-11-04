@@ -3,24 +3,24 @@
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
+function getCookieValue(cookieName: string): string | null {
+    const match = document.cookie.match('(^|;)\\s*' + cookieName + '\\s*=\\s*([^;]+)');
+    return match ? decodeURIComponent(match[2]) : null;
+}
+
 export const useProfileId = () => {
     const router = useRouter();
-    const [profileId, setProfileId] = useState("");
-
-    const searchParams = useSearchParams();
 
     useEffect(() => {
-        const id = searchParams.get("profile-id") ?? localStorage.getItem("profile-id");
-
-        if (!id) {
+        const cookieValue = getCookieValue("ync-profile-id");
+        if (cookieValue) {
+            setProfileId(cookieValue);
+        } else {
             router.push("/choose-profile");
         }
-
-        setProfileId(id ?? "");
-        if (id) {
-            localStorage.setItem("profile-id", id);
-        }
     }, []);
+
+    const [profileId, setProfileId] = useState("");
 
     return profileId;
 }

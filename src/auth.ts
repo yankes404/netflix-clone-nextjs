@@ -11,6 +11,9 @@ import "next-auth";
 import { loginSchema } from "./features/auth/schemas"
 import bcrypt from "bcryptjs";
 import { getUserSubscription } from "./features/subscriptions/utils"
+import { cookies } from "next/headers"
+import { getProfile } from "./features/profiles/actions"
+import { Profile } from "./features/profiles/types"
 
 declare module "next-auth" {
   interface Session {
@@ -20,6 +23,7 @@ declare module "next-auth" {
       email: string;
       image: string;
       premium: boolean;
+      profileId?: string | null;
     };
   }
 }
@@ -79,7 +83,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (token && token.sub) {
         session.user.id = token.sub;
         const subscription = await getUserSubscription(token.sub);
+        
+        const profileCookie = cookies().get("ync-profile-id");
+
+        // let profile: Profile | null = null;
+
+        // if (profileCookie) {
+        //   profile = await getProfile(profileCookie.value);
+        // }
+
         session.user.premium = !!subscription;
+        session.user.profileId = profileCookie?.value;
       }
       return session;
     },

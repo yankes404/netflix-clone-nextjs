@@ -6,12 +6,14 @@ import { TrackPlayer } from "@/features/tracks/components/track-player";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { LoaderCircleIcon } from "lucide-react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 
 export const WatchIdClient = () => {
     const { id: trackId } = useParams<{ id: string }>();
-    const { data, isLoading } = useGetTrack(trackId);
+    const searchParams = useSearchParams();
+    const episodeId = searchParams.get("episode_id") ?? undefined;
+    const { data, isLoading } = useGetTrack(trackId, episodeId);
 
     const [videoSrc, setVideoSrc] = useState("");
     const [isLoadingVideoSrc, startTransition] = useTransition();
@@ -36,7 +38,7 @@ export const WatchIdClient = () => {
             })
         }
     }, [data]);
-    
+
     if (isLoading && isLoadingVideoSrc) {
         return (
             <div className="w-screen h-screen bg-background p-4 flex flex-col items-center justify-center gap-6">
@@ -48,7 +50,7 @@ export const WatchIdClient = () => {
         )
     }
 
-    if (!data || videoSrcError) {
+    if ((!data || videoSrcError)) {
         return (
             <div className="w-screen h-screen bg-background p-4 flex flex-col items-center justify-center gap-6">
                 <ExclamationTriangleIcon className="size-6" />
@@ -74,6 +76,7 @@ export const WatchIdClient = () => {
             seasons={data.seasons}
             nextEpisode={data.nextEpisode}
             videoSrc={videoSrc}
+            time={data.time}
         />
     )
 }
