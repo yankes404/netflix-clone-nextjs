@@ -43,7 +43,7 @@ export const Header = () => {
     }, []);
 
     return (
-        <header className={cn("w-screen mx-auto fixed top-0 z-50 left-1/2 -translate-x-1/2 transition", top > 0 && "bg-background")}>
+        <header className={cn("w-screen mx-auto fixed top-0 z-50 left-1/2 -translate-x-1/2 transition duration-300", top > 0 && "bg-background")}>
             <div className="w-full max-w-screen-2xl mx-auto py-6 px-4 flex justify-between items-center gap-x-6">
                 <div className="flex items-center gap-10">
                     <Link
