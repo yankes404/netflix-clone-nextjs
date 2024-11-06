@@ -150,3 +150,21 @@ export const watchTimes = pgTable(
     updatedAt: timestamp("updatedAt").defaultNow()
   }
 )
+
+export const profileLists = pgTable(
+  "profile_list",
+  {
+    id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+    profileId: text("profileId")
+      .notNull()
+      .references(() => profiles.id, { onDelete: "cascade" })
+      .notNull(),
+    trackId: text("trackId")
+      .notNull()
+      .references(() => tracks.id, { onDelete: "cascade" })
+      .notNull(),
+    createdAt: timestamp("createdAt").defaultNow()
+  }
+)
