@@ -1,6 +1,11 @@
 import { auth } from "@/auth";
 import { SignUpCard } from "@/features/auth/components/sign-up-card";
 import { redirect } from "next/navigation";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Sign up - Netflix"
+}
 
 const SignUpPage = async () => {
     const session = await auth();

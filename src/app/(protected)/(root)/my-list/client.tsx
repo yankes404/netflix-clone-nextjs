@@ -27,7 +27,6 @@ export const MyListClient = () => {
                             key={listItem.id}
                             id={listItem.track.id}
                             title={listItem.track.title}
-                            lenght={0}
                             image={listItem.track.poster}
                             tags={[]}
                         />

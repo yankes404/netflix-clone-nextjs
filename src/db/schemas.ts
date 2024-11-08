@@ -1,14 +1,20 @@
+import { getAllCategoriesIds } from "@/features/categories/utils";
 import { ProfileImage } from "@/features/profiles/types";
 import { SubscriptionType } from "@/features/subscriptions/types";
 import { TrackType } from "@/features/tracks/types";
+import { sql } from "drizzle-orm";
 import {
   timestamp,
   pgTable,
   text,
   primaryKey,
   integer,
+  pgEnum,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
+
+const allCategoriesIds = getAllCategoriesIds() as string[];
+export const trackCategories = pgEnum("track_category", allCategoriesIds as [string, ...string[]]);
 
 export const users = pgTable("user", {
   id: text("id")
@@ -108,7 +114,9 @@ export const tracks = pgTable(
     path: text("path"),
 
     logo: text("logo").notNull(),
-    poster: text("poster").notNull()
+    poster: text("poster").notNull(),
+
+    categories: trackCategories("categories").array().default(sql`'{}'`).notNull()
   }
 )
 

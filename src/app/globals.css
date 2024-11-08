@@ -89,3 +89,7 @@ body {
     transform: scale(100%);
   }
 }
+
+.categories-popover::-webkit-scrollbar {
+  width: 0;
+}

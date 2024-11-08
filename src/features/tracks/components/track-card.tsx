@@ -14,7 +14,7 @@ interface Props {
     id: string;
     title: string
     image: string;
-    tags: string[]
+    tags: string[];
 }
 
 export const TrackCard = ({

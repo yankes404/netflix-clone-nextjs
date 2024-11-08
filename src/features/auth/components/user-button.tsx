@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
-import { LogOutIcon, SettingsIcon, UsersIcon } from "lucide-react";
+import { HeartIcon, LogOutIcon, SettingsIcon, UsersIcon } from "lucide-react";
 
 import {
     DropdownMenu,
@@ -82,6 +82,14 @@ export const UserButton = () => {
                     <div className="flex items-center gap-1.5">
                         <UsersIcon className="size-4 mr-0" />
                         Switch Profile
+                    </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                    onClick={() => router.push("/my-list")}
+                >
+                    <div className="flex items-center gap-1.5">
+                        <HeartIcon className="size-4 mr-0" />
+                        Your list
                     </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem

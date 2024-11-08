@@ -41,3 +41,9 @@ export function isNumber (value: number) {
   if (!isNaN(value) && typeof value === "number") return true;
   else return false;
 }
+
+export function stringToHex(str: string) {
+  return Array.from(str)
+    .map(char => char.charCodeAt(0).toString(16).padStart(2, '0'))
+    .join('');
+}

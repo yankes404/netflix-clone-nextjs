@@ -3,8 +3,11 @@
 import { episodes, tracks, watchTimes } from "@/db/schemas";
 import { db } from "@/db/utils";
 import { and, desc, eq } from "drizzle-orm";
-import { Episode, MiniEpisode, PopulatedSeason, Track, TrackType } from "./types";
+import { Episode, HomePageDataRes, HomePageDataResRow, MiniEpisode, PopulatedSeason, SearchTracksProps, Track, TrackType } from "./types";
 import { auth } from "@/auth";
+import { like } from 'drizzle-orm/expressions';
+import { Category } from "../categories/types";
+import { homePageRecords } from "./constants";
 
 export const getTrackById = async (
     id: string,
@@ -199,4 +202,123 @@ export const saveWatchTime = async ({
 
         return { error: "Something went wrong" }
     }
+}
+
+export const searchTracks = async ({
+    search,
+    types,
+    categories
+}: SearchTracksProps) => {
+    const session = await auth();
+    
+    if (!session || !session.user || !session.user.premium) return [];
+
+    const isOnlyMovies = types.includes(TrackType.MOVIE) && !types.includes(TrackType.SERIE);
+    const isOnlySeries = types.includes(TrackType.SERIE) && !types.includes(TrackType.MOVIE);
+
+    const isNoType = !types.includes(TrackType.MOVIE) && !types.includes(TrackType.SERIE);
+
+    if (isNoType) {
+        return [];
+    }
+
+    const fetchedTracks = await db
+        .select()
+        .from(tracks)
+
+    const lowerSearch = search.toLowerCase();
+
+    const populatedTracks = await Promise.all(
+        fetchedTracks
+        .filter((track) => {
+            const lowerTitle = track.title.toLowerCase();
+            return lowerSearch.includes(lowerTitle) || lowerTitle.includes(lowerSearch);
+        })
+        .filter((track) => {
+            if (isOnlyMovies) {
+                return track.type === TrackType.MOVIE;
+            }
+
+            if (isOnlySeries) {
+                return track.type === TrackType.SERIE;
+            }
+
+            return true;
+        })
+        .filter((track) => {
+            let allowed = false;
+
+            track.categories.map((category) => {
+                if (categories.includes(category as Category)) {
+                    allowed = true;
+                }
+            });
+
+            return allowed;
+        })
+    )
+
+    return populatedTracks;
+}
+
+export const getHomeRecords = async (): Promise<HomePageDataRes> => {
+    const session = await auth();
+    
+    if (!session || !session.user || !session.user.premium) return [];
+
+    const initialData = homePageRecords;
+
+    const ids = initialData.map((data) => data.trackIds.map((id) => id)).flat();
+
+    const fetchedTracks = await Promise.all(
+        ids.map(async(id) => {
+            const fetchedTracks = await db
+                .select()
+                .from(tracks)
+                .where(eq(tracks.id, id));
+
+            return fetchedTracks[0] ?? null;
+        })
+        .filter((track) => track !== null)
+    );
+
+    const data = await Promise.all(
+        initialData.map(async(row) => {
+            const tracks = await Promise.all(
+                row.trackIds
+                    .map(async(id) => fetchedTracks.find((track) => track.id === id) ?? null)
+            )
+
+            const fixedTracks = tracks.filter((track) => track !== null);
+
+            const rowData: HomePageDataResRow = {
+                title: row.title,
+                tracks: fixedTracks
+            }
+
+            return rowData;
+        })
+    )
+
+    return data;
+}
+
+export const getRandomTrack = async () => {
+    const session = await auth();
+    
+    if (!session || !session.user || !session.user.premium) return null;
+
+    const allTracks = await db
+        .select({ id: tracks.id })
+        .from(tracks);
+
+    const index = Math.floor(Math.random() * allTracks.length);
+    const id = allTracks[index].id;
+
+    const fetchedTracks = await db
+        .select()
+        .from(tracks)
+        .where(eq(tracks.id, id));
+
+    return fetchedTracks[0] as Track;
 }

@@ -4,7 +4,8 @@ import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import { QueryProvider } from "@/components/query-provider";
 import { cn } from "@/lib/utils";
-import { Toaster } from "@/components/ui/sonner";
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,14 +20,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en-US">
+      <head>
+        <link rel="icon" type="image/x-icon" href="/logo.svg"/>
+      </head>
       <body
         className={cn("dark antialiased", inter.className)}
       >
         <SessionProvider>
           <QueryProvider>
-            <Toaster />
-            {children}
+            <NuqsAdapter>
+              <Toaster />
+              {children}
+            </NuqsAdapter>
           </QueryProvider>
         </SessionProvider>
       </body>

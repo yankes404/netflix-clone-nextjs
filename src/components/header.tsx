@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { UserButton } from "@/features/auth/components/user-button";
 import { SearchIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Button } from "./ui/button";
 
 const links = [
     {
@@ -43,7 +44,7 @@ export const Header = () => {
     }, []);
 
     return (
-        <header className={cn("w-screen mx-auto fixed top-0 z-50 left-1/2 -translate-x-1/2 transition duration-300", top > 0 && "bg-background")}>
+        <header className={cn("w-screen mx-auto fixed top-0 z-50 left-0 transition-colors duration-300", top > 0 && "bg-background")}>
             <div className="w-full max-w-screen-2xl mx-auto py-6 px-4 flex justify-between items-center gap-x-6">
                 <div className="flex items-center gap-10">
                     <Link
@@ -79,7 +80,16 @@ export const Header = () => {
                     </nav>
                 </div>
                 <div className="flex items-center gap-x-6">
-                    <SearchIcon className="size-5" />
+                    <Button
+                        variant="ghost"
+                        asChild
+                        size="icon"
+                        className="!bg-transparent p-0"
+                    >
+                        <Link href="/search">
+                            <SearchIcon className="size-5" />
+                        </Link>
+                    </Button>
                     <UserButton />
                 </div>
             </div>
