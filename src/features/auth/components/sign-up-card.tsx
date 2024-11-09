@@ -99,7 +99,7 @@ export const SignUpCard = ()  => {
                                     </FormLabel>
                                     <FormControl {...field}>
                                         <Input
-                                            placeholder="John"
+                                            placeholder="John Doe"
                                             disabled={isPending}
                                         />
                                     </FormControl>

@@ -8,7 +8,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Skeleton } from "@/components/ui/skeleton";
 import { allCategories } from "@/features/categories/constants";
 import { Category } from "@/features/categories/types";
-import { getAllCategoriesIds, getCategoryTitle, getCategoryTitles } from "@/features/categories/utils";
+import { getAllCategoriesIds, getCategoryTitles } from "@/features/categories/utils";
 import { useSearchTracks } from "@/features/tracks/api/use-search-tracks";
 import { TrackCard } from "@/features/tracks/components/track-card";
 import { TrackType } from "@/features/tracks/types";

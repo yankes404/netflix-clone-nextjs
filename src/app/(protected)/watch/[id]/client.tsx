@@ -50,7 +50,7 @@ export const WatchIdClient = () => {
         )
     }
 
-    if ((!data || videoSrcError)) {
+    if (!data || videoSrcError) {
         return (
             <div className="w-screen h-screen bg-background p-4 flex flex-col items-center justify-center gap-6">
                 <ExclamationTriangleIcon className="size-6" />

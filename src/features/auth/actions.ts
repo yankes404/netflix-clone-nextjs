@@ -6,7 +6,7 @@ import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
 
 import { db } from "@/db/utils";
-import { users } from "@/db/schemas";
+import { accounts, users } from "@/db/schemas";
 
 import { registerSchema, loginSchema } from "@/features/auth/schemas";
 import { signIn } from "@/auth";
@@ -76,4 +76,28 @@ export const login = async (
 
         return { error: "Something went wrong" }
     }
+}
+
+export const getProvider = async (id: string) => {
+    const fetchedUsers = await db
+        .select()
+        .from(users)
+        .where(eq(users.id, id))
+
+    const user = fetchedUsers[0];
+
+    if (!user) {
+        throw new Error(`User with ID: ${id}, does not exist`)
+    }
+
+    const fetchedAccounts = await db
+        .select()
+        .from(accounts)
+        .where(eq(accounts.userId, user.id))
+
+    const account = fetchedAccounts[0];
+
+    if (!account) return null;
+
+    return account.provider ?? null;
 }

@@ -21,6 +21,7 @@ declare module "next-auth" {
       id: string;
       name: string;
       email: string;
+      emailVerified?: Date | null;
       image: string;
       premium: boolean;
       profileId?: string | null;
@@ -86,14 +87,35 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         
         const profileCookie = cookies().get("ync-profile-id");
 
-        // let profile: Profile | null = null;
+        const fetchedUsers = await db
+          .select()
+          .from(users)
+          .where(eq(users.id, session.user.id))
 
-        // if (profileCookie) {
-        //   profile = await getProfile(profileCookie.value);
-        // }
+        const user = fetchedUsers[0];
 
         session.user.premium = !!subscription;
         session.user.profileId = profileCookie?.value;
+
+        session.user.emailVerified = user.emailVerified;
+
+        if (user) {
+          if (user.name) {
+            session.user.name = user.name;
+          }
+
+          if (user.email) {
+            session.user.email = user.email;
+          }
+
+          if (user.emailVerified) {
+            session.user.emailVerified = user.emailVerified;
+          }
+
+          if (user.image) {
+            session.user.image = user.image;
+          }
+        }
       }
       return session;
     },
