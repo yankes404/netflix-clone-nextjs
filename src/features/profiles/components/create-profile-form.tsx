@@ -29,7 +29,6 @@ import { useSession } from "next-auth/react";
 import { useCreateProfile } from "../api/use-create-profile";
 import { LoaderCircleIcon } from "lucide-react";
 import { useGetProfiles } from "../api/use-get-profiles";
-import { useUserId } from "@/features/auth/api/use-user-id";
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 
@@ -38,10 +37,8 @@ type FormType = z.infer<typeof createProfileSchema>;
 export const CreateProfileForm = () => {
     const router = useRouter();
 
-    const userId = useUserId();
-
     const { mutate, isPending } = useCreateProfile();
-    const { data: profiles, isLoading: isLoadingProfiles } = useGetProfiles(userId);
+    const { data: profiles, isLoading: isLoadingProfiles } = useGetProfiles();
 
     const { data: session } = useSession();
 
@@ -68,7 +65,7 @@ export const CreateProfileForm = () => {
     }
 
     const onSubmit = (values: FormType) => {
-        mutate({ ...values, userId: session.user.id })
+        mutate(values);
     }
 
     return (

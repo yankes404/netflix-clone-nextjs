@@ -14,6 +14,7 @@ import { EditUserPasswordModal } from "@/features/settings/components/edit-user-
 import { parseAsStringEnum, useQueryState } from "nuqs";
 import { allSettingPages } from "@/features/settings/constants";
 import { SettingPageEnum } from "@/features/settings/types";
+import { EditProfilesForm } from "@/features/profiles/components/edit-profiles-form";
 
 export const SettingsClient = () => {
     const { data: session } = useSession();
@@ -53,9 +54,12 @@ export const SettingsClient = () => {
                 onValueChange={(value) => setPage(value as SettingPageEnum)}
                 className="w-full"
             >
-                <TabsList className="w-full grid grid-cols-3">
+                <TabsList className="w-full grid grid-cols-4">
                     <TabsTrigger value={SettingPageEnum.GENERAL}>
                         General
+                    </TabsTrigger>
+                    <TabsTrigger value={SettingPageEnum.PROFILES}>
+                        Profiles
                     </TabsTrigger>
                     <TabsTrigger value={SettingPageEnum.SECURITY}>
                         Security
@@ -64,7 +68,7 @@ export const SettingsClient = () => {
                         Subscriptions
                     </TabsTrigger>
                 </TabsList>
-                <TabsContent value="general">
+                <TabsContent value={SettingPageEnum.GENERAL}>
                     <Card className="w-full">
                         <CardHeader>
                             <CardTitle className="text-xl">
@@ -91,7 +95,10 @@ export const SettingsClient = () => {
                         </div>
                     </Card>
                 </TabsContent>
-                <TabsContent value="security">
+                <TabsContent value={SettingPageEnum.PROFILES}>
+                    <EditProfilesForm />
+                </TabsContent>
+                <TabsContent value={SettingPageEnum.SECURITY}>
                     <Card className="w-full">
                         <CardHeader>
                             <CardTitle className="text-xl">

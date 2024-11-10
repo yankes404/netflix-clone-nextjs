@@ -41,7 +41,7 @@ export const UserButton = () => {
                 asChild
             >
                 <Link
-                    href="/choose-profile"
+                    href="/profiles/choose"
                 >
                     Choose Profile
                 </Link>
@@ -77,7 +77,7 @@ export const UserButton = () => {
                     </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                    onClick={() => router.push("/choose-profile")}
+                    onClick={() => router.push("/profiles/choose")}
                 >
                     <div className="flex items-center gap-1.5">
                         <UsersIcon className="size-4 mr-0" />

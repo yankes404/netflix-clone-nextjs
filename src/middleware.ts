@@ -35,12 +35,12 @@ export default auth(async(req) => {
     if ((!isPublicRoute || (nextUrl.pathname === "/" && !!req.auth)) && req.auth) {
         const profiles = await getProfiles(req.auth.user.id);
             
-        if (!profiles[0] && nextUrl.pathname !== "/create-profile") {
+        if (!profiles[0] && nextUrl.pathname !== "/profiles/create") {
             console.log(profiles[0], nextUrl.pathname)
-            return Response.redirect(new URL("/create-profile", nextUrl));
+            return Response.redirect(new URL("/profiles/create", nextUrl));
         }
 
-        if (nextUrl.pathname !== CHOOSE_PROFILE_ROUTE && nextUrl.pathname !== "/create-profile" && !req.auth.user.profileId) {
+        if (nextUrl.pathname !== CHOOSE_PROFILE_ROUTE && nextUrl.pathname !== "/profiles/create" && !req.auth.user.profileId) {
             return Response.redirect(new URL(CHOOSE_PROFILE_ROUTE, nextUrl));
         }
 

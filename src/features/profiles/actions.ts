@@ -10,28 +10,29 @@ import { createProfileSchema } from "./schemas";
 import { auth } from "@/auth";
 import { cookies } from "next/headers";
 import { Profile } from "./types";
-import { Track } from "../tracks/types";
 
 export const createProfile = async (
     values: z.infer<typeof createProfileSchema>
 ) => {
+    const session = await auth();
+
+    if (!session || !session.user) {
+        return { error: "Not logged in" }
+    }
+
     const validatedFields = createProfileSchema.safeParse(values);
 
     if (!validatedFields.success) {
         return { error: "Invalid fields" }
     }
 
-    const { userId, name, image } = validatedFields.data;
-
-    if (!userId) {
-        return { error: "No userId" }
-    }
+    const { name, image } = validatedFields.data;
 
     // TODO: Check the limits
 
     const profile = await db.insert(profiles)
         .values({
-            userId,
+            userId: session.user.id,
             name,
             image
         })
@@ -42,14 +43,58 @@ export const createProfile = async (
     return { profile: profile[0] };
 }
 
-export const getProfiles = async (userId: string) => {
+export const updateProfile = async (
+    profileId: string,
+    values: z.infer<typeof createProfileSchema>
+) => {
+    try {
+        const session = await auth();
+    
+        if (!session || !session.user) {
+            return { error: "Not logged in" }
+        }
+    
+        const profile = await getProfile(profileId);
+    
+        if (!profile) {
+            return { error: "Profile does not exist" }
+        }
+    
+        const validatedFields = createProfileSchema.safeParse(values);
+    
+        if (!validatedFields.success) {
+            return { error: "Invalid fields" }
+        }
+    
+        const { name, image } = validatedFields.data;
+
+        await db
+            .update(profiles)
+            .set({ name, image })
+            .where(eq(profiles.id, profile.id));
+
+        return { success: true }
+    } catch (error) {
+        if (process.env.NODE_ENV !== "production") {
+            console.error(error);
+        }
+
+        return { error: "Something went wrong" }
+    }
+}
+
+export const getProfiles = async () => {
+    const session = await auth();
+
+    if (!session || !session.user) return [];
+
     const userProfiles = await db.select({
         id: profiles.id,
         name: profiles.name,
         image: profiles.image
     })
         .from(profiles)
-        .where(eq(profiles.userId, userId));
+        .where(eq(profiles.userId, session.user.id));
 
     return userProfiles;
 }

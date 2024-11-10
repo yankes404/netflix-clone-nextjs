@@ -4,4 +4,4 @@ export const PUBLIC_ROUTES = ["/"];
 export const PREMIUM_ROUTES = ["/", "/watch"];
 
 export const DEFAULT_LOGIN_REDIRECT = '/';
-export const CHOOSE_PROFILE_ROUTE = "/choose-profile";
+export const CHOOSE_PROFILE_ROUTE = "/profiles/choose";

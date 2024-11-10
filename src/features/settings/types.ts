@@ -8,6 +8,7 @@ export type EditUserPasswordType = z.infer<typeof editUserPasswordSchema>;
 
 export enum SettingPageEnum {
     GENERAL = "general",
+    PROFILES = "profiles",
     SECURITY = "security",
-    SUBSCRIPTIONS = "subscriptions"
+    SUBSCRIPTIONS = "subscriptions",
 }

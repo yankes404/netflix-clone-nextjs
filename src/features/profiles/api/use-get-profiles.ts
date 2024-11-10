@@ -3,10 +3,10 @@
 import { useQuery } from "@tanstack/react-query"
 import { getProfiles } from "../actions"
 
-export const useGetProfiles = (userId: string) => {
+export const useGetProfiles = () => {
     const query = useQuery({
-        queryKey: ["profiles", userId],
-        queryFn: () => getProfiles(userId)
+        queryKey: ["profiles"],
+        queryFn: () => getProfiles()
     });
 
     return query;

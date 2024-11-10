@@ -16,7 +16,7 @@ export const useProfileId = () => {
         if (cookieValue) {
             setProfileId(cookieValue);
         } else {
-            router.push("/choose-profile");
+            router.push("/profiles/choose");
         }
     }, []);
 

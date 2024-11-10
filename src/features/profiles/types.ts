@@ -9,4 +9,5 @@ export enum ProfileImage {
     GRAY = "gray"
 }
 
-export type Profile = InferSelectModel<typeof profiles>
+export type Profile = InferSelectModel<typeof profiles>;
+export type MiniProfile = Omit<Profile, "userId" | "createdAt">;
