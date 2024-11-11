@@ -5,7 +5,6 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { toast } from "sonner";
 import { useRetrieveSessionStatus } from "../api/use-retrieve-session-status";
 import { CheckCircleIcon, LoaderCircleIcon, Tv2Icon } from "lucide-react";
 import { CopyValueButton } from "@/components/copy-value-button";
@@ -62,7 +61,7 @@ export const PaymentStatusCard = () => {
                     <div className="text-sm font-medium text-destructive flex items-center">
                         <ExclamationTriangleIcon className="size-4 mr-1" />
                         <p>
-                            Something went wrong. Don&apos;t worry, you won't be charged, this is only demo
+                            Something went wrong. Don&apos;t worry, you won&apos;t be charged, this is only demo
                         </p>
                     </div>
                 ) : (

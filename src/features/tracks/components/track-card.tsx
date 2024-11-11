@@ -1,14 +1,11 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ProfilesListButton } from "@/features/profiles/components/profiles-list-button";
-import { formatSeconds } from "@/lib/utils";
 import { PlayIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Fragment, useRef } from "react";
 
 interface Props {
     id: string;

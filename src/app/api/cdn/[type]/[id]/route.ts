@@ -49,6 +49,10 @@ export const GET = async(_: NextRequest, { params }: { params: { type: string; i
 
         return new NextResponse(fileContent, { headers });
     } catch (error) {
+        if (process.env.NODE_ENV !== "production") {
+            console.error(error);
+        }
+
         return NextResponse.json(
             { error: "Internal server error" },
             { status: 500 }

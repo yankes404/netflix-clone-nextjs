@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 import { SettingsClient } from "./client";
 
@@ -7,7 +8,11 @@ export const metadata: Metadata = {
 }
 
 const SettingsPage = () => {
-    return <SettingsClient />
+    return (
+        <Suspense>
+            <SettingsClient />
+        </Suspense>
+    )
 }
  
 export default SettingsPage;

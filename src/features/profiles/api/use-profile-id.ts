@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 function getCookieValue(cookieName: string): string | null {
     const match = document.cookie.match('(^|;)\\s*' + cookieName + '\\s*=\\s*([^;]+)');
@@ -18,7 +18,7 @@ export const useProfileId = () => {
         } else {
             router.push("/profiles/choose");
         }
-    }, []);
+    }, [router]);
 
     const [profileId, setProfileId] = useState("");
 

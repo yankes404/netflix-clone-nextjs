@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Slider } from "@/components/ui/slider";
 import { cn, formatSeconds, formatSecondsTwo, isNumber } from "@/lib/utils";
-import { ArrowLeftIcon, FolderIcon, FullscreenIcon, GaugeIcon, MinimizeIcon, PauseIcon, PlayIcon, SkipForwardIcon, Volume, Volume1Icon, Volume2Icon, VolumeIcon, VolumeOffIcon } from "lucide-react";
+import { ArrowLeftIcon, FolderIcon, FullscreenIcon, GaugeIcon, MinimizeIcon, PauseIcon, PlayIcon, SkipForwardIcon, Volume1Icon, Volume2Icon, VolumeIcon, VolumeOffIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Episode, MiniEpisode, PopulatedSeason, Track, TrackType } from "../types";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -121,18 +121,20 @@ export const TrackPlayer = ({
     }
     
     useEffect(() => {
-        if (videoRef.current) {
+        const videoElement = videoRef.current;
+    
+        if (videoElement) {
             const onLoad = () => {
-                setFullTime(videoRef.current?.duration ?? 0);
-            }
-
-            videoRef.current.addEventListener("loadedmetadata", onLoad);
-            
+                setFullTime(videoElement.duration ?? 0);
+            };
+    
+            videoElement.addEventListener("loadedmetadata", onLoad);
+    
             return () => {
-                videoRef.current?.removeEventListener("load", onLoad);
-            }
+                videoElement.removeEventListener("loadedmetadata", onLoad);
+            };
         }
-    }, [videoRef]);
+    }, [videoRef]);    
 
     useEffect(() => {
         if (videoRef.current) {
@@ -237,18 +239,21 @@ export const TrackPlayer = ({
         }
     }, [videoRef, startTime, fullTime, nextEpisode]);
 
-    const saveCurrentWatchTime = (useBeacon?: boolean) => {
+    const saveCurrentWatchTime = useCallback((useBeacon = false) => {
         if (videoRef.current) {
             const currentTime = videoRef.current.currentTime;
-
+    
             if (useBeacon) {
-                navigator.sendBeacon(`/api/tracks/${data.track.id}/watch-time`, JSON.stringify({ time: currentTime, episodeId: data.currentEpisode?.id }))
+                navigator.sendBeacon(
+                    `/api/tracks/${data.track.id}/watch-time`,
+                    JSON.stringify({ time: currentTime, episodeId: data.currentEpisode?.id })
+                );
             } else {
                 saveWatchTime(currentTime);
             }
         }
-    }
-
+    }, [data.track.id, data.currentEpisode?.id, videoRef, saveWatchTime]);
+    
     useEffect(() => {
         const handleBeforeUnload = () => {
             saveCurrentWatchTime(true);
@@ -259,7 +264,7 @@ export const TrackPlayer = ({
         return () => {
             window.removeEventListener("beforeunload", handleBeforeUnload);
         };
-    }, [videoRef]);
+    }, [saveCurrentWatchTime]);
     
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -507,6 +512,7 @@ export const TrackPlayer = ({
                                                                 <AccordionContent>
                                                                     {season.episodes.map((episode) => (
                                                                         <Link
+                                                                            key={episode.id}
                                                                             href={`/watch/${data.track.id}?episode_id=${episode.id}`}
                                                                             className={cn("text-xs font-medium text-neutral-200 p-2.5 rounded-md transition hover:bg-neutral-900 w-full flex justify-between hover:text-white", episode.id === data.currentEpisode?.id && "pointer-events-none text-white bg-neutral-900")}
                                                                         >

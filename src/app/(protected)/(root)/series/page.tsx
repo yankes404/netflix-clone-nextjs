@@ -1,4 +1,6 @@
 import { Metadata } from "next";
+import { Suspense } from "react";
+
 import { SearchClient } from "../search/client";
 
 export const metadata: Metadata = {
@@ -7,12 +9,14 @@ export const metadata: Metadata = {
 
 const SeriesPage = () => {
     return (
-        <SearchClient
-            title="Series"
-            defaultMovies={true}
-            defaultSeries={false}
-            showSeriesAndMoviesFilter={false}
-        />
+        <Suspense>
+            <SearchClient
+                title="Series"
+                defaultMovies={true}
+                defaultSeries={false}
+                showSeriesAndMoviesFilter={false}
+            />
+        </Suspense>
     )
 }
  

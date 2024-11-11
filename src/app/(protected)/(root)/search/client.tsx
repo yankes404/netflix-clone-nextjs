@@ -148,6 +148,7 @@ export const SearchClient = ({
                         />
                     )) : tracks?.map((track) => (
                         <TrackCard
+                            key={track.id}
                             id={track.id}
                             title={track.title}
                             image={track.poster}

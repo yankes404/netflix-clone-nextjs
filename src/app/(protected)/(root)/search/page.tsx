@@ -1,4 +1,6 @@
 import { Metadata } from "next";
+import { Suspense } from "react";
+
 import { SearchClient } from "./client";
 
 export const metadata: Metadata = {
@@ -6,7 +8,11 @@ export const metadata: Metadata = {
 }
 
 const SearchPage = () => {
-    return <SearchClient />
+    return (
+        <Suspense>
+            <SearchClient />
+        </Suspense>
+    )
 }
  
 export default SearchPage;

@@ -50,7 +50,7 @@ export const CreateProfileForm = () => {
         }
     });
 
-    const firstProfile = useMemo(() => profiles ? !profiles.length : false, [profiles, isLoadingProfiles]);
+    const firstProfile = useMemo(() => profiles ? !profiles.length : false, [profiles]);
 
     if (!session || !session.user) return null;
 

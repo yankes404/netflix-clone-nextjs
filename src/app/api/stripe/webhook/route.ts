@@ -4,9 +4,7 @@ import { getStripe } from "@/features/subscriptions/utils";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { and, eq } from "drizzle-orm";
-import { plans } from "@/features/subscriptions/constants";
 import { findPlanByPriceId } from "@/features/subscriptions/helpers";
-import { SubscriptionType } from "@/features/subscriptions/types";
 
 const stripe = getStripe();
 
@@ -29,7 +27,7 @@ export const POST = async (
         switch(eventType) {
             case "checkout.session.completed": {
                 const session = await stripe.checkout.sessions.retrieve(
-                    // @ts-ignore
+                    // @ts-expect-error data.object.id as a type is not a string, so this is the only way to pass this as an argument to this function
                     data.object.id as string,
                     {
                         expand: ["line_items"]
@@ -79,7 +77,7 @@ export const POST = async (
             }
             case "customer.subscription.deleted": {
                 const subscription = await stripe.subscriptions.retrieve(
-                    // @ts-ignore
+                    // @ts-expect-error data.object.id as a type is not a string, so this is the only way to pass this as an argument to this function
                     data.object.id as string
                 );
 
