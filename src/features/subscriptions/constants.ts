@@ -8,7 +8,10 @@ export const plans: SubscriptionData = {
         features: [
             "Only 1 profile",
             "Full HD and 4K videos"
-        ]
+        ],
+        limits: {
+            maxProfiles: 1
+        }
     },
     [SubscriptionType.FAMILY]: {
         name: "Netflix Family",
@@ -17,6 +20,9 @@ export const plans: SubscriptionData = {
         features: [
             "Up to 5 profiles",
             "Full HD and 4K videos"
-        ]
+        ],
+        limits: {
+            maxProfiles: 5
+        }
     },
 }

@@ -8,6 +8,7 @@ import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { useRetrieveSessionStatus } from "../api/use-retrieve-session-status";
 import { CheckCircleIcon, LoaderCircleIcon, Tv2Icon } from "lucide-react";
+import { CopyValueButton } from "@/components/copy-value-button";
 
 export const PaymentStatusCard = () => {
     
@@ -17,24 +18,13 @@ export const PaymentStatusCard = () => {
     
     const { data: status, isPending } = useRetrieveSessionStatus(sessionId ?? "");
 
-    const onCopyId = () => {
-        if (!sessionId) return toast.error("No Session Id");
-
-        try {
-            navigator.clipboard.writeText(sessionId);
-            toast.success("Copied");
-        } catch {
-            toast.error("Something went wrong");
-        }
-    }
-
     return (
         <Card className="w-full lg:w-[450px]">
             <CardHeader>
                 {sessionId ? (
                     <div className="w-full flex flex-col gap-4">
-                        <div className="text-sm font-mono font-semibold flex items-center gap- w-full1">
-                            <span className="shrink-0">Session Id:</span> <button onClick={onCopyId} className="bg-neutral-800 hover:bg-neutral-700 transition text-neutral-300 p-1 rounded-sm text-xs truncate select-none">{sessionId}</button>
+                        <div className="text-sm font-mono font-semibold flex items-center gap-2 w-full justify-center">
+                            <span className="shrink-0">Session Id:</span> <CopyValueButton value={sessionId} />
                         </div>
                         {isPending ? (
                             <LoaderCircleIcon className="size-4 animate-spin text-muted-foreground mx-auto" />

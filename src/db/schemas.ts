@@ -25,6 +25,11 @@ export const users = pgTable("user", {
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   password: text("password"),
   image: text("image"),
+  currentPlan: text("currentPlan", { enum: [
+    SubscriptionType.BASIC,
+    SubscriptionType.FAMILY,
+  ] }),
+  customerId: text("customerId")
 });
 
 export const accounts = pgTable(
@@ -71,24 +76,6 @@ export const profiles = pgTable(
     ] }).notNull()
   }
 );
-
-export const subscriptions = pgTable(
-  "subscription",
-  {
-    id: text("id")
-    .primaryKey()
-    .$defaultFn(() => crypto.randomUUID()),
-    userId: text("userId")
-      .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
-    type: text("type", { enum: [
-      SubscriptionType.BASIC,
-      SubscriptionType.FAMILY,
-    ] }),
-    createdAt: timestamp("createdAt").defaultNow(),
-    expiresAt: timestamp("expiresAt").notNull(),
-  }
-)
 
 export const tracks = pgTable(
   "track",

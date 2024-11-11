@@ -10,10 +10,8 @@ import { eq } from "drizzle-orm";
 import "next-auth";
 import { loginSchema } from "./features/auth/schemas"
 import bcrypt from "bcryptjs";
-import { getUserSubscription } from "./features/subscriptions/utils"
 import { cookies } from "next/headers"
-import { getProfile } from "./features/profiles/actions"
-import { Profile } from "./features/profiles/types"
+import { SubscriptionType } from "./features/subscriptions/types"
 
 declare module "next-auth" {
   interface Session {
@@ -23,7 +21,8 @@ declare module "next-auth" {
       email: string;
       emailVerified?: Date | null;
       image: string;
-      premium: boolean;
+      isSubscribed: boolean;
+      currentPlan: SubscriptionType | null;
       profileId?: string | null;
     };
   }
@@ -82,9 +81,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     async session({ session, token }) {
       if (token && token.sub) {
-        session.user.id = token.sub;
-        const subscription = await getUserSubscription(token.sub);
-        
+        session.user.id = token.sub;        
         const profileCookie = cookies().get("ync-profile-id");
 
         const fetchedUsers = await db
@@ -94,7 +91,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         const user = fetchedUsers[0];
 
-        session.user.premium = !!subscription;
+        session.user.isSubscribed = !!user.currentPlan;
+        session.user.currentPlan = user.currentPlan;
         session.user.profileId = profileCookie?.value;
 
         session.user.emailVerified = user.emailVerified;

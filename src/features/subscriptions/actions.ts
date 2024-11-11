@@ -5,14 +5,14 @@ import { plans } from "./constants";
 import { sessionMiddleware } from "../../lib/middlewares";
 import { StripePaymentStatus, SubscriptionType } from "./types";
 
+const stripe = getStripe();
+
 export const createCheckout = async (plan: SubscriptionType) => sessionMiddleware(async ({ user }) => {
-    if (user.premium) {
+    if (user.isSubscribed) {
         return { error: "Already have a subscription" }
     }
 
     const priceId = plans[plan].priceId;
-
-    const stripe = getStripe();
 
     const session = await stripe.checkout.sessions.create({
         mode: "subscription",
@@ -25,7 +25,10 @@ export const createCheckout = async (plan: SubscriptionType) => sessionMiddlewar
         success_url: `${process.env.NEXT_PUBLIC_APP_URL}/subscriptions/status?id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/subscriptions/error=true`,
         customer_email: user.email,
-        locale: "en"
+        locale: "en",
+        metadata: {
+            userId: user.id
+        }
     });
 
     return {
@@ -35,8 +38,6 @@ export const createCheckout = async (plan: SubscriptionType) => sessionMiddlewar
 
 export const retrieveSessionStatus = async (id: string): Promise<{ status: StripePaymentStatus | null }> => {
     if (!id) return { status: null }
-
-    const stripe = getStripe();
 
     const session = await stripe.checkout.sessions.retrieve(id);
 

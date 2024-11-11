@@ -9,6 +9,7 @@ export default auth(async(req) => {
     const isApiRoute = nextUrl.pathname.startsWith(API_ROUTE_PREFIX);
     const isPublicRoute = PUBLIC_ROUTES.includes(nextUrl.pathname);
     const isAuthRoute = AUTH_ROUTES.includes(nextUrl.pathname);
+    const isPremiumRoute = PREMIUM_ROUTES.includes(nextUrl.pathname) || nextUrl.pathname.includes("/watch");
 
     if (isApiRoute) {
         return;
@@ -33,7 +34,7 @@ export default auth(async(req) => {
     }
 
     if ((!isPublicRoute || (nextUrl.pathname === "/" && !!req.auth)) && req.auth) {
-        const profiles = await getProfiles(req.auth.user.id);
+        const profiles = await getProfiles();
             
         if (!profiles[0] && nextUrl.pathname !== "/profiles/create") {
             console.log(profiles[0], nextUrl.pathname)
@@ -44,11 +45,11 @@ export default auth(async(req) => {
             return Response.redirect(new URL(CHOOSE_PROFILE_ROUTE, nextUrl));
         }
 
-        if (PREMIUM_ROUTES.includes(nextUrl.pathname) && !req.auth.user.premium && nextUrl.pathname !== "/choose-plan") {
+        if (isPremiumRoute && !req.auth.user.isSubscribed && nextUrl.pathname !== "/choose-plan") {
             return Response.redirect(new URL("/choose-plan", nextUrl));
         }
         
-        if (nextUrl.pathname === "/choose-plan" && req.auth.user.premium) {
+        if (nextUrl.pathname === "/choose-plan" && req.auth.user.isSubscribed) {
             return Response.redirect(new URL("/", nextUrl));
         }
     }

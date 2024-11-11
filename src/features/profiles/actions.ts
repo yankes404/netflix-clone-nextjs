@@ -10,6 +10,7 @@ import { createProfileSchema } from "./schemas";
 import { auth } from "@/auth";
 import { cookies } from "next/headers";
 import { Profile } from "./types";
+import { plans } from "../subscriptions/constants";
 
 export const createProfile = async (
     values: z.infer<typeof createProfileSchema>
@@ -28,8 +29,18 @@ export const createProfile = async (
 
     const { name, image } = validatedFields.data;
 
-    // TODO: Check the limits
+    if (!session.user.isSubscribed || !session.user.currentPlan) {
+        return { error: "You have to subscribe if you want to create profile" }
+    }
 
+    const planDetails = plans[session.user.currentPlan];
+
+    const profilesCount = (await getProfiles()).length;
+
+    if (profilesCount >= planDetails.limits.maxProfiles) {
+        return { error: "You cannot create more profiles in this plan" }
+    }
+    
     const profile = await db.insert(profiles)
         .values({
             userId: session.user.id,

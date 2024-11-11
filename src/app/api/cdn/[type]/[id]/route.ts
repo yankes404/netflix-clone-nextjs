@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 import fs from "fs";
 import path from "path";
-import { getUserSubscription } from "@/features/subscriptions/utils";
 import { auth } from "@/auth";
 
 export const GET = async(_: NextRequest, { params }: { params: { type: string; id: string } }) => {
@@ -14,8 +13,7 @@ export const GET = async(_: NextRequest, { params }: { params: { type: string; i
         );
     }
     
-    const isSubscribed = !!(await getUserSubscription(session.user.id));
-    if (!isSubscribed) {
+    if (!session.user.isSubscribed) {
         return NextResponse.json(
             { error: "Unauthorized" },
             { status: 401 }

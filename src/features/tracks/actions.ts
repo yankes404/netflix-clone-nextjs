@@ -5,7 +5,6 @@ import { db } from "@/db/utils";
 import { and, desc, eq } from "drizzle-orm";
 import { Episode, HomePageDataRes, HomePageDataResRow, MiniEpisode, PopulatedSeason, SearchTracksProps, Track, TrackType } from "./types";
 import { auth } from "@/auth";
-import { like } from 'drizzle-orm/expressions';
 import { Category } from "../categories/types";
 import { homePageRecords } from "./constants";
 
@@ -15,7 +14,7 @@ export const getTrackById = async (
 ) => {
     const session = await auth();
 
-    if (!session || !session.user || !session.user.premium) return;
+    if (!session || !session.user || !session.user.isSubscribed) return;
 
     function reduceArray(arr: number[]): number[] {
         const uniqueArray = Array.from(new Set(arr));
@@ -94,7 +93,7 @@ export const getWatchTime = async (
     try {
         const session = await auth();
     
-        if (!session || !session.user || !session.user.premium || !session.user.profileId) return { error: "Unauthorized" };
+        if (!session || !session.user || !session.user.isSubscribed || !session.user.profileId) return { error: "Unauthorized" };
 
         const fetchedTracks = await db
             .select()
@@ -161,7 +160,7 @@ export const saveWatchTime = async ({
     try {
         const session = await auth();
     
-        if (!session || !session.user || !session.user.premium || !session.user.profileId) return { error: "Unauthorized" };
+        if (!session || !session.user || !session.user.isSubscribed || !session.user.profileId) return { error: "Unauthorized" };
     
         const fetchedWatchTimes = await db
             .select()
@@ -211,7 +210,7 @@ export const searchTracks = async ({
 }: SearchTracksProps) => {
     const session = await auth();
     
-    if (!session || !session.user || !session.user.premium) return [];
+    if (!session || !session.user || !session.user.isSubscribed) return [];
 
     const isOnlyMovies = types.includes(TrackType.MOVIE) && !types.includes(TrackType.SERIE);
     const isOnlySeries = types.includes(TrackType.SERIE) && !types.includes(TrackType.MOVIE);
@@ -264,7 +263,7 @@ export const searchTracks = async ({
 export const getHomeRecords = async (): Promise<HomePageDataRes> => {
     const session = await auth();
     
-    if (!session || !session.user || !session.user.premium) return [];
+    if (!session || !session.user || !session.user.isSubscribed) return [];
 
     const initialData = homePageRecords;
 
@@ -306,7 +305,7 @@ export const getHomeRecords = async (): Promise<HomePageDataRes> => {
 export const getRandomTrack = async () => {
     const session = await auth();
     
-    if (!session || !session.user || !session.user.premium) return null;
+    if (!session || !session.user || !session.user.isSubscribed) return null;
 
     const allTracks = await db
         .select({ id: tracks.id })

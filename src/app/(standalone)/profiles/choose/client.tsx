@@ -29,7 +29,7 @@ export const ChooseProfileClient = () => {
                 Choose Profile
             </h1>
             <div className="w-full flex justify-center mt-4 gap-6 items-center">
-                {profiles?.map((profile) => (
+                {Array.isArray(profiles) && profiles?.map((profile) => (
                     <button
                         onClick={() => chooseProfile(profile.id)}
                         className="p-4 rounded-md hover:bg-neutral-900 transition disabled:pointer-events-none disabled:opacity-50 relative"
