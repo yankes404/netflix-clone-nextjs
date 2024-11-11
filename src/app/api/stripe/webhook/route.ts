@@ -75,6 +75,52 @@ export const POST = async (
 
                 return NextResponse.json({ success: true });
             }
+            case "customer.subscription.updated": {
+                const subscription = await stripe.subscriptions.retrieve(
+                    // @ts-expect-error data.object.id as a type is not a string, so this is the only way to pass this as an argument to this function
+                    data.object.id as string
+                );
+            
+                const customerId = subscription.customer;
+
+                if (!customerId || typeof customerId !== "string") {
+                    return NextResponse.json({ error: "No customer" }, { status: 400 });
+                }
+
+                const priceId = subscription.items?.data[0]?.price?.id;
+
+                if (!priceId) {
+                    throw new Error("No priceId");
+                }
+
+                const plan = findPlanByPriceId(priceId);
+
+                if (!plan) {
+                    throw new Error("Plan not found");
+                }
+
+                const isCanceled = !!subscription.cancel_at;       
+                
+                const fetchedUsers = await db
+                    .select()
+                    .from(users)
+                    .where(and(
+                        eq(users.customerId, customerId),
+                    ));
+
+                const user = fetchedUsers[0];
+
+                if (!user) {
+                    throw new Error("User not found");
+                }
+                
+                await db
+                    .update(users)
+                    .set({ currentPlan: isCanceled ? null : plan.type })
+                    .where(eq(users.id, user.id))
+
+                return NextResponse.json({ success: true });
+            }
             case "customer.subscription.deleted": {
                 const subscription = await stripe.subscriptions.retrieve(
                     // @ts-expect-error data.object.id as a type is not a string, so this is the only way to pass this as an argument to this function

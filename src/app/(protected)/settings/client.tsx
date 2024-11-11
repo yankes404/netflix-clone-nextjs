@@ -15,6 +15,9 @@ import { parseAsStringEnum, useQueryState } from "nuqs";
 import { allSettingPages } from "@/features/settings/constants";
 import { SettingPageEnum } from "@/features/settings/types";
 import { EditProfilesForm } from "@/features/profiles/components/edit-profiles-form";
+import { plans } from "@/features/subscriptions/constants";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export const SettingsClient = () => {
     const { data: session } = useSession();
@@ -118,6 +121,42 @@ export const SettingsClient = () => {
                                 canEdit
                                 onEditOpen={openEditUserPasswordModal}
                             />
+                        </div>
+                    </Card>
+                </TabsContent>
+                <TabsContent value={SettingPageEnum.SUBSCRIPTIONS}>
+                    <Card className="w-full">
+                        <CardHeader>
+                            <CardTitle className="text-xl">
+                                Subscriptions
+                            </CardTitle>
+                        </CardHeader>
+                        <div className="flex flex-col w-full px-6 pb-6">
+                            <SettingValue
+                                label="Current Plan"
+                                value={session.user.currentPlan ? plans[session.user.currentPlan].name : "None"}
+                                disabled
+                            />
+                            <div className="w-full flex pt-4">
+                                {session.user.isSubscribed ? (
+                                    <Button asChild>
+                                        <Link
+                                            href={`${process.env.NEXT_PUBLIC_STRIPE_PORTAL_URL}?prefilled_email=${session.user.email}`}
+                                        >
+                                            Manage Subscription
+                                        </Link>
+                                    </Button>
+                                ): (
+                                    <Button
+                                        variant="primary"
+                                        asChild
+                                    >
+                                        <Link href="/choose-plan">
+                                            Subscribe
+                                        </Link>
+                                    </Button>
+                                )}
+                            </div>
                         </div>
                     </Card>
                 </TabsContent>
