@@ -1,3 +1,4 @@
+import { verificationTokenValidityLength } from "@/config";
 import { getAllCategoriesIds } from "@/features/categories/utils";
 import { ProfileImage } from "@/features/profiles/types";
 import { SubscriptionType } from "@/features/subscriptions/types";
@@ -29,7 +30,7 @@ export const users = pgTable("user", {
     SubscriptionType.BASIC,
     SubscriptionType.FAMILY,
   ] }),
-  customerId: text("customerId")
+  customerId: text("customerId").unique()
 });
 
 export const accounts = pgTable(
@@ -55,6 +56,20 @@ export const accounts = pgTable(
     }),
   })
 );
+
+export const verificationTokens = pgTable("verification_token", {
+  token: text("token")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  expiresAt: timestamp("expiresAt")
+    .$defaultFn(() => new Date(new Date().getTime() + verificationTokenValidityLength))
+    .notNull(),
+  userEmail: text("userEmail")
+    .notNull()
+    .references(() => users.email, { onDelete: "cascade" })
+    .unique(),
+  expectedEmail: text("expectedEmail").notNull()
+});
 
 export const profiles = pgTable(
   "profile",

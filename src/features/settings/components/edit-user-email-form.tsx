@@ -71,7 +71,7 @@ export const EditUserEmailForm = ({ onSuccess }: Props) => {
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>
-                                Name
+                                New Email
                             </FormLabel>
                             <FormControl {...field}>
                                 <Input

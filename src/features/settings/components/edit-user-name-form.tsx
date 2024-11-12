@@ -71,7 +71,7 @@ export const EditUserNameForm = ({ onSuccess }: Props) => {
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>
-                                Name
+                                New Name
                             </FormLabel>
                             <FormControl {...field}>
                                 <Input

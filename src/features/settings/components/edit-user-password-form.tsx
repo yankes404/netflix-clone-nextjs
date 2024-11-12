@@ -71,7 +71,7 @@ export const EditUserPasswordForm = ({ onSuccess }: Props) => {
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>
-                                Name
+                                New Password
                             </FormLabel>
                             <FormControl {...field}>
                                 <Input

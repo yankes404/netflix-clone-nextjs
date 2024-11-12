@@ -136,7 +136,7 @@ export const POST = async (
                 const fetchedUsers = await db
                     .select()
                     .from(users)
-                    .where(eq(users.id, customerId));
+                    .where(eq(users.customerId, customerId));
 
                 const user = fetchedUsers[0];
 

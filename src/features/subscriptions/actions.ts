@@ -4,10 +4,20 @@ import { getStripe } from "./utils";
 import { plans } from "./constants";
 import { sessionMiddleware } from "../../lib/middlewares";
 import { StripePaymentStatus, SubscriptionType } from "./types";
+import { createVerificationToken } from "../auth/actions";
 
 const stripe = getStripe();
 
 export const createCheckout = async (plan: SubscriptionType) => sessionMiddleware(async ({ user }) => {
+    if (!user.emailVerified) {
+        await createVerificationToken(
+            user.email,
+            user.name
+        );
+        
+        return { error: `You have to verify email address to subscribe.` }
+    }
+
     if (user.isSubscribed) {
         return { error: "Already have a subscription" }
     }

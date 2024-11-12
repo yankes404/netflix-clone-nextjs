@@ -29,15 +29,13 @@ export const createProfile = async (
 
     const { name, image } = validatedFields.data;
 
-    if (!session.user.isSubscribed || !session.user.currentPlan) {
-        return { error: "You have to subscribe if you want to create profile" }
-    }
-
-    const planDetails = plans[session.user.currentPlan];
+    const planDetails = session.user.currentPlan ? plans[session.user.currentPlan] : null;
 
     const profilesCount = (await getProfiles()).length;
 
-    if (profilesCount >= planDetails.limits.maxProfiles) {
+    const limit = planDetails ? planDetails.limits.maxProfiles : 1;
+
+    if (profilesCount >= limit) {
         return { error: "You cannot create more profiles in this plan" }
     }
     

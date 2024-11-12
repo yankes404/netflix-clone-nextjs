@@ -6,7 +6,7 @@ import { editUserEmailSchema, editUserNameSchema, editUserPasswordSchema } from 
 import { db } from "@/db/utils";
 import { users } from "@/db/schemas";
 import { eq } from "drizzle-orm";
-import { getProvider } from "../auth/actions";
+import { createVerificationToken, getProvider } from "../auth/actions";
 import bcrypt from "bcryptjs";
 
 export const updateUserName = async (values: EditUserNameType) => {
@@ -92,10 +92,11 @@ export const updateUserEmail = async (values: EditUserEmailType) => {
             return { error: "You cannot update your email address when you logged in by Google or Github" }
         }
 
-        await db
-            .update(users)
-            .set({ email, emailVerified: null })
-            .where(eq(users.id, session.user.id));
+        const { error } = await createVerificationToken(email, user.name ?? "CANNOT_READ_USER_NAME");
+
+        if (error) {
+            return { error }
+        }
 
         return { success: true }
     } catch (error) {

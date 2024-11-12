@@ -14,14 +14,14 @@ export const useCreateProfile = () => {
         mutationFn: async (
             values: z.infer<typeof createProfileSchema>
         ) => await createProfile(values),
-        onSuccess: (data) => {
+        onSettled: (data) => {
             if (data?.profile) {
-                router.push(`/?profile-id=${data.profile.id}`);
+                router.push(`/`);
+            }
+            if (data?.error) {
+                toast.error(data.error);
             }
         },
-        onError: () => {
-            toast.error("Something went wrong")
-        }
     });
 
     return mutation;

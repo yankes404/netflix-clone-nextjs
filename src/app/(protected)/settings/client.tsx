@@ -18,10 +18,15 @@ import { EditProfilesForm } from "@/features/profiles/components/edit-profiles-f
 import { plans } from "@/features/subscriptions/constants";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { SettingField } from "@/components/setting-field";
+import { CopyValueButton } from "@/components/copy-value-button";
+import { useSendVerificationEmail } from "@/features/settings/api/use-send-verification-email";
 
 export const SettingsClient = () => {
     const { data: session } = useSession();
 
+    const { mutate: sendVerificationEmail, isPending: isSendingVerificationEmail } = useSendVerificationEmail();
+    
     const [page, setPage] = useQueryState("page", parseAsStringEnum(allSettingPages).withDefault(SettingPageEnum.GENERAL));
 
     const [isEditUserNameModalOpen, setIsEditUserNameModalOpen] = useState(false);
@@ -109,11 +114,26 @@ export const SettingsClient = () => {
                             </CardTitle>
                         </CardHeader>
                         <div className="flex flex-col w-full px-6 pb-6">
-                            <SettingValue
+                            <SettingField
                                 label="Email Verified"
-                                value={session.user.emailVerified ? format(session.user.emailVerified, "PPP") : "Not verified"}
-                                disabled
-                            />
+                            >
+                                <div className="flex flex-col gap-2 items-end">
+                                    <CopyValueButton
+                                        value={session.user.emailVerified ? format(session.user.emailVerified, "PPP") : "Not verified"}
+                                        disabled
+                                    />
+                                    {!session.user.emailVerified && (
+                                        <Button
+                                            size="sm"
+                                            variant="outline"
+                                            onClick={() => sendVerificationEmail()}
+                                            disabled={isSendingVerificationEmail}
+                                        >
+                                            Send Verification Email
+                                        </Button>
+                                    )}
+                                </div>
+                            </SettingField>
                             <SettingValue
                                 label="Password"
                                 value="******"
