@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import { Html, Button, Head, Font, Body, Heading, Text, Link, Tailwind } from "@react-email/components";
+import { Html, Head, Font, Body, Heading, Text, Link } from "@react-email/components";
 
 interface TextLinkProps {
     href: string;
@@ -36,7 +36,6 @@ interface Props {
 
 export const VerificationTokenTemplate: FC<Props> = ({
     name,
-    email,
     token
 }) => {
     return (
