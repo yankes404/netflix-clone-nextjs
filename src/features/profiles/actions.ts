@@ -15,41 +15,46 @@ import { plans } from "../subscriptions/constants";
 export const createProfile = async (
     values: z.infer<typeof createProfileSchema>
 ) => {
-    const session = await auth();
-
-    if (!session || !session.user) {
-        return { error: "Not logged in" }
-    }
-
-    const validatedFields = createProfileSchema.safeParse(values);
-
-    if (!validatedFields.success) {
-        return { error: "Invalid fields" }
-    }
-
-    const { name, image } = validatedFields.data;
-
-    const planDetails = session.user.currentPlan ? plans[session.user.currentPlan] : null;
-
-    const profilesCount = (await getProfiles()).length;
-
-    const limit = planDetails ? planDetails.limits.maxProfiles : 1;
-
-    if (profilesCount >= limit) {
-        return { error: "You cannot create more profiles in this plan" }
-    }
+    try {
+        const session = await auth();
     
-    const profile = await db.insert(profiles)
-        .values({
-            userId: session.user.id,
-            name,
-            image
-        })
-        .returning();
-
-    chooseProfile(profile[0].id);
+        if (!session || !session.user) {
+            return { error: "Not logged in" }
+        }
     
-    return { success: true };
+        const validatedFields = createProfileSchema.safeParse(values);
+    
+        if (!validatedFields.success) {
+            return { error: "Invalid fields" }
+        }
+    
+        const { name, image } = validatedFields.data;
+    
+        const planDetails = session.user.currentPlan ? plans[session.user.currentPlan] : null;
+    
+        const profilesCount = (await getProfiles()).length;
+    
+        const limit = planDetails ? planDetails.limits.maxProfiles : 1;
+    
+        if (profilesCount >= limit) {
+            return { error: "You cannot create more profiles in this plan" }
+        }
+        
+        const profile = await db.insert(profiles)
+            .values({
+                userId: session.user.id,
+                name,
+                image
+            })
+            .returning();
+    
+        chooseProfile(profile[0].id);
+        
+        return { success: true };
+    } catch (error) {
+        console.error(error);
+        return { error: "Something went wrong" }
+    }
 }
 
 export const updateProfile = async (

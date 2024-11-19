@@ -1,3 +1,5 @@
+"use client"
+
 import { useRouter } from "next/navigation"
 import { useMutation } from "@tanstack/react-query"
 
@@ -20,7 +22,7 @@ export const useCreateProfile = () => {
                 toast.success("Created profile", {
                     action: {
                         label: "Home",
-                        onClick: () => router.push("/")
+                        onClick: () => window.location.assign("/")
                     }
                 })
             }
