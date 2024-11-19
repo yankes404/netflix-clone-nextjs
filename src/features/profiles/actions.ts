@@ -40,13 +40,12 @@ export const createProfile = async (
             return { error: "You cannot create more profiles in this plan" }
         }
         
-        const profile = await db.insert(profiles)
+        await db.insert(profiles)
             .values({
                 userId: session.user.id,
                 name,
                 image
             })
-            .returning();
         
         return { success: true };
     } catch (error) {
