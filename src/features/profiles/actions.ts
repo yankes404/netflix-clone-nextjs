@@ -47,8 +47,6 @@ export const createProfile = async (
                 image
             })
             .returning();
-    
-        chooseProfile(profile[0].id);
         
         return { success: true };
     } catch (error) {

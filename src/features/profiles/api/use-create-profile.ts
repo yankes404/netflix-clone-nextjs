@@ -1,6 +1,6 @@
 "use client"
 
-import { useRouter } from "next/navigation"
+// import { useRouter } from "next/navigation"
 import { useMutation } from "@tanstack/react-query"
 
 import { z } from "zod"
@@ -10,7 +10,7 @@ import { createProfileSchema } from "../schemas"
 import { createProfile } from "../actions"
 
 export const useCreateProfile = () => {
-    const router = useRouter();
+    // const router = useRouter();
 
     const mutation = useMutation({
         mutationFn: async (
@@ -19,12 +19,7 @@ export const useCreateProfile = () => {
         onSettled: (data) => {
             console.log(data);
             if (data?.success) {
-                toast.success("Created profile", {
-                    action: {
-                        label: "Home",
-                        onClick: () => window.location.assign("/")
-                    }
-                })
+                window.location.assign("/choose-profile");
             }
             if (data?.error) {
                 toast.error(data.error);
