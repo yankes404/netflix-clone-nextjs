@@ -5,7 +5,7 @@ import { SessionProvider } from "next-auth/react";
 import { QueryProvider } from "@/components/query-provider";
 import { cn } from "@/lib/utils";
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
-import { Toaster } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 

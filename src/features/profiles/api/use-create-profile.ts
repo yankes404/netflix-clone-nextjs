@@ -15,8 +15,14 @@ export const useCreateProfile = () => {
             values: z.infer<typeof createProfileSchema>
         ) => await createProfile(values),
         onSettled: (data) => {
+            console.log(data);
             if (data?.success) {
-                router.push(`/`);
+                toast.success("Created profile", {
+                    action: {
+                        label: "Home",
+                        onClick: () => router.push("/")
+                    }
+                })
             }
             if (data?.error) {
                 toast.error(data.error);

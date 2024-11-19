@@ -92,11 +92,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const user = fetchedUsers[0];
 
         session.user.isSubscribed = !!user.currentPlan;
-        session.user.currentPlan = user.currentPlan;
         session.user.profileId = profileCookie?.value;
-
+        
         session.user.emailVerified = user.emailVerified;
-
+        
         if (user) {
           if (user.name) {
             session.user.name = user.name;
@@ -113,6 +112,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           if (user.image) {
             session.user.image = user.image;
           }
+
+          session.user.currentPlan = user.currentPlan;
         }
       }
       return session;
