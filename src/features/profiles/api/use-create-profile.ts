@@ -15,7 +15,7 @@ export const useCreateProfile = () => {
             values: z.infer<typeof createProfileSchema>
         ) => await createProfile(values),
         onSettled: (data) => {
-            if (data?.profile) {
+            if (data?.success) {
                 router.push(`/`);
             }
             if (data?.error) {

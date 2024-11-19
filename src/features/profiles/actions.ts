@@ -49,7 +49,7 @@ export const createProfile = async (
 
     chooseProfile(profile[0].id);
     
-    return { profile: profile[0] };
+    return { success: true };
 }
 
 export const updateProfile = async (
