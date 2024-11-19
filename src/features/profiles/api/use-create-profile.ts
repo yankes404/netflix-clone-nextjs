@@ -19,7 +19,7 @@ export const useCreateProfile = () => {
         onSettled: (data) => {
             console.log(data);
             if (data?.success) {
-                window.location.assign("/choose-profile");
+                window.location.assign("/profiles/choose");
             }
             if (data?.error) {
                 toast.error(data.error);
