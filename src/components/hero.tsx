@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Button } from "./ui/button";
 import { LoaderCircleIcon, PlayIcon } from "lucide-react";
 import Link from "next/link";
