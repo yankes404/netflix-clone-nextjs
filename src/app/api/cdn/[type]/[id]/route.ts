@@ -1,61 +1,41 @@
+"use server";
+
 import { NextRequest, NextResponse } from "next/server";
 
-import fs from "fs";
-import path from "path";
-import { auth } from "@/auth";
+import { getDynamicFile } from "./action";
 
-export const GET = async(_: NextRequest, { params }: { params: { type: string; id: string } }) => {
-    const session = await auth();
-    if (!session || !session.user) {
-        return NextResponse.json(
-            { error: "Unauthorized" },
-            { status: 401 }
-        );
-    }
-    
-    if (!session.user.isSubscribed) {
-        return NextResponse.json(
-            { error: "Unauthorized" },
-            { status: 401 }
-        );
-    }
+interface Props {
+    params: Promise<{ type: string; id: string }>;
+}
 
-    const { type, id } = params;
-
-    const filePath = path.join(process.cwd(), "public", type, id);
-    console.log(filePath)
-
-    if (!fs.existsSync(filePath)) {
-        return NextResponse.json(
-            { error: "File not found" },
-            { status: 404 }
-        );
-    }
-
+export const GET = async(_: NextRequest, { params }: Props) => {
     try {
-        const fileContent = fs.readFileSync(filePath);
+        const { id, type } = await params;
 
-        const headers = new Headers();
-        if (type === "images") {
-            headers.set("Content-Type", "image/webp");
-        } else if (type === "videos") {
-            headers.set("Content-Type", "video/mp4");
+        if (!id) return NextResponse.json({ error: "Missing ID" }, { status: 400 });
+        if (type !== "images" && type !== "videos") return NextResponse.json({ error: "Invalid type" }, { status: 400 });
+
+        const { error, successFile, status } = await getDynamicFile({
+            id,
+            type
+        });
+
+        if (error) {
+            return NextResponse.json({ error }, { status: status ?? 500 });
+        }
+        
+        if (successFile) {
+            const headers = new Headers();
+            
+            headers.set("Content-Type", successFile.contentType);
+
+            return new NextResponse(successFile.buffer, { headers });
         } else {
-            return NextResponse.json(
-                { error: "Invalid type parameter, must be 'images' or 'videos'" },
-                { status: 400 }
-            );
+            return NextResponse.json({ error: "File not found" }, { status: 404 });
         }
-
-        return new NextResponse(fileContent, { headers });
     } catch (error) {
-        if (process.env.NODE_ENV !== "production") {
-            console.error(error);
-        }
+        console.error("[ROUTE] Error while getting dynamic file",error);
 
-        return NextResponse.json(
-            { error: "Internal server error" },
-            { status: 500 }
-        );
+        return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
     }
 }

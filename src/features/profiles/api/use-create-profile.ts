@@ -17,7 +17,6 @@ export const useCreateProfile = () => {
             values: z.infer<typeof createProfileSchema>
         ) => await createProfile(values),
         onSettled: (data) => {
-            console.log(data);
             if (data?.success) {
                 window.location.assign("/profiles/choose");
             }

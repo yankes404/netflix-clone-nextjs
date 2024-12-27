@@ -37,7 +37,6 @@ export default auth(async(req) => {
         const profiles = await getProfiles();
             
         if (!profiles[0] && nextUrl.pathname !== "/profiles/create") {
-            console.log(profiles[0], nextUrl.pathname)
             return Response.redirect(new URL("/profiles/create", nextUrl));
         }
 

@@ -1,20 +1,22 @@
 "use server";
 
+import { and, desc, eq } from "drizzle-orm";
+
+import { auth } from "@/auth";
 import { episodes, tracks, watchTimes } from "@/db/schemas";
 import { db } from "@/db/utils";
-import { and, desc, eq } from "drizzle-orm";
-import { Episode, HomePageDataRes, HomePageDataResRow, MiniEpisode, PopulatedSeason, SearchTracksProps, Track, TrackType } from "./types";
-import { auth } from "@/auth";
+
+import { Episode, HomePageDataRes, HomePageDataResRow, MiniEpisode, PopulatedSeason, SearchTracksProps, Track, TrackDetails, TrackType } from "./types";
 import { Category } from "../categories/types";
 import { homePageRecords } from "./constants";
 
 export const getTrackById = async (
     id: string,
     episodeId?: string
-) => {
+): Promise<TrackDetails | null> => {
     const session = await auth();
 
-    if (!session || !session.user || !session.user.isSubscribed) return;
+    if (!session || !session.user || !session.user.isSubscribed) return null;
 
     function reduceArray(arr: number[]): number[] {
         const uniqueArray = Array.from(new Set(arr));
@@ -24,7 +26,7 @@ export const getTrackById = async (
 
     const fetchedTracks: Track[] = await db.select()
         .from(tracks)
-        .where(eq(tracks.id, id))
+        .where(eq(tracks.id, id));
 
     const track = fetchedTracks[0];
 
@@ -45,7 +47,7 @@ export const getTrackById = async (
                 eq(episodes.trackId, id),
                 currentEpisodeId ? eq(episodes.id, currentEpisodeId) : undefined,
             ))
-            .limit(1)
+            .limit(1);
 
         const currentEpisode = currentEpisodes[0];
 
@@ -53,7 +55,7 @@ export const getTrackById = async (
 
         const populatedEpisodes = await db.select({ id: episodes.id, title: episodes.title, season: episodes.season })
             .from(episodes)
-            .where(eq(episodes.trackId, id))
+            .where(eq(episodes.trackId, id));
 
         const currentEpisodeIndex = populatedEpisodes.findIndex(({ id }) => id === currentEpisode.id);
 
@@ -63,7 +65,7 @@ export const getTrackById = async (
         
         const seasonNumbers = await Promise.all(
             populatedEpisodes.map((currentEpisode) => currentEpisode.season)
-        )
+        );
 
         const reducedSeasonNumbers = reduceArray(seasonNumbers);
 
@@ -72,15 +74,14 @@ export const getTrackById = async (
             episodes: []
         }));
 
-
-        Promise.all(
+        await Promise.all(
             populatedEpisodes.map((currentEpisode) => populatedSeasons[currentEpisode.season].episodes.push(currentEpisode))
         );
 
         const nextEpisodeIndex = currentEpisodeIndex + 1;
         const nextEpisode: MiniEpisode | null = populatedEpisodes[nextEpisodeIndex] ?? null;
 
-        return { track, currentEpisode, seasons: populatedSeasons, nextEpisode, time }
+        return { track, currentEpisode, seasons: populatedSeasons, nextEpisode, time };
     }
 
     return { track, time };

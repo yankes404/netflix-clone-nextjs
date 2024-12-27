@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Slider } from "@/components/ui/slider";
 import { cn, formatSeconds, formatSecondsTwo, isNumber } from "@/lib/utils";
-import { ArrowLeftIcon, FolderIcon, FullscreenIcon, GaugeIcon, MinimizeIcon, PauseIcon, PlayIcon, SkipForwardIcon, Volume1Icon, Volume2Icon, VolumeIcon, VolumeOffIcon } from "lucide-react";
+import { ArrowLeftIcon, FolderIcon, FullscreenIcon, GaugeIcon, LoaderCircleIcon, MinimizeIcon, PauseIcon, PlayIcon, SkipForwardIcon, Volume1Icon, Volume2Icon, VolumeIcon, VolumeOffIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Episode, MiniEpisode, PopulatedSeason, Track, TrackType } from "../types";
+import { MiniEpisode, PopulatedSeason, TrackDetails, TrackType } from "../types";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useSaveWatchTime } from "../api/use-save-watch-time";
@@ -24,15 +24,9 @@ const speeds = [
 
 type Speed = typeof speeds[number];
 
-interface Data {
-    track: Track;
-    currentEpisode?: Episode;
-    nextEpisode?: MiniEpisode;
-}
-
 interface Props {
     type: TrackType;
-    data: Data;
+    data: TrackDetails;
     seasons?: PopulatedSeason[];
     nextEpisode?: MiniEpisode | null;
     videoSrc: string;
@@ -54,12 +48,15 @@ export const TrackPlayer = ({
     const containerRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
 
+    const [isLoaded, setIsLoaded] = useState(false);
+
     const [isPlaying, setIsPlaying] = useState(false);
     const [isOverlayed, setIsOverlayed] = useState(false);
     const [isPauseOverlay, setIsPauseOverlay] = useState(false);
 
     const [currentTime, setCurrentTime] = useState(0);
     const [fullTime, setFullTime] = useState(0);
+
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [playbackSpeed, setPlaybackSpeed] = useState<Speed>(1);
     const [volume, setVolume] = useState(100);
@@ -119,30 +116,38 @@ export const TrackPlayer = ({
             localStorage.setItem("volume", volume.toString());
         }
     }
-    
-    useEffect(() => {
-        const videoElement = videoRef.current;
-    
-        if (videoElement) {
-            const onLoad = () => {
-                setFullTime(videoElement.duration ?? 0);
-            };
-    
-            videoElement.addEventListener("loadedmetadata", onLoad);
-    
-            return () => {
-                videoElement.removeEventListener("loadedmetadata", onLoad);
-            };
+
+    const onLoadedMetadata = ({ currentTarget }: React.SyntheticEvent<HTMLVideoElement, Event>) => {
+        const fullTime = currentTarget.duration ?? 0;
+
+        setFullTime(fullTime);
+        setIsLoaded(true);
+
+        if (typeof startTime === "number") {
+            const difference = fullTime - startTime;
+            const isEnding = difference < 5;
+
+            if (isEnding) {
+                if (data.nextEpisode) {
+                    router.push(`/watch/${data.track.id}?episode_id=${data.nextEpisode.id}`);
+                } else {
+                    currentTarget.currentTime = 0;
+                    setCurrentTime(0);
+                }
+            } else {
+                currentTarget.currentTime = startTime;
+                setCurrentTime(startTime);
+            }
+
         }
-    }, [videoRef]);    
+
+        // * The autoplay feature is blocked by most popular browsers due to security reasons. Only popular websites like YouTube or Netflix can autoplay with volume, and only after the user has interacted with the website.
+    }
 
     useEffect(() => {
         if (videoRef.current) {
             const interval = setInterval(() => {
                 setCurrentTime(videoRef.current?.currentTime ?? 0);
-                if (videoRef.current) {
-                    // videoRef.current.currentTime = 50;
-                }
             }, 1000);
     
             return () => clearInterval(interval);
@@ -229,16 +234,6 @@ export const TrackPlayer = ({
 
     const { mutate: saveWatchTime } = useSaveWatchTime({ trackId: data.track.id, episodeId: data.currentEpisode?.id });
 
-    useEffect(() => {
-        if (videoRef.current && startTime) {
-            const difference = Math.abs(fullTime - startTime);
-
-            const isCloseToEnd = difference <= 5;
-
-            onTimeChange(isCloseToEnd ? 0 : startTime);
-        }
-    }, [videoRef, startTime, fullTime, nextEpisode]);
-
     const saveCurrentWatchTime = useCallback((useBeacon = false) => {
         if (videoRef.current) {
             const currentTime = videoRef.current.currentTime;
@@ -265,16 +260,6 @@ export const TrackPlayer = ({
             window.removeEventListener("beforeunload", handleBeforeUnload);
         };
     }, [saveCurrentWatchTime]);
-    
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            if (videoRef.current) {
-                videoRef.current.muted = false;
-            }
-        }, 900);
-
-        return () => clearTimeout(timeout);
-    }, [videoRef]);    
 
     const [isEnded, setIsEnded] = useState(false);
 
@@ -298,6 +283,11 @@ export const TrackPlayer = ({
 
     return (
         <div className="relative">
+            {!isLoaded && (
+                <div className="w-screen h-screen grid place-items-center fixed top-0 left-0 bg-background/75 backdrop-blur-2xl z-[100]">
+                    <LoaderCircleIcon className="size-6 animate-spin text-muted-foreground" />
+                </div>
+            )}
             <div
                 className={cn("fixed z-50 top-0 left-0 w-screen h-screen transition-opacity duration-1000 bg-cover bg-no-repeat bg-center", !isEnded && "opacity-0 scale-0")}
                 style={{
@@ -310,6 +300,7 @@ export const TrackPlayer = ({
                         alt={data.track.title}
                         width={214}
                         height={54}
+                        style={{ height: "auto", width: "auto" }}
                     />
                     <h1 className="mt-8 text-2xl font-bold drops">
                         Video Ended
@@ -346,11 +337,10 @@ export const TrackPlayer = ({
                     src={videoSrc}
                     className="w-screen h-screen object-cover"
                     controls={false}
-                    autoPlay
-                    muted
                     onPlay={() => setIsPlaying(true)}
                     onPause={() => setIsPlaying(false)}
                     onEnded={onEnded}
+                    onLoadedMetadata={onLoadedMetadata}
                 />
                 <div
                     className={cn("w-screen h-screen fixed top-0 left-0 z-10 bg-black/80 transition-opacity", !isPauseOverlay && "opacity-0")}
@@ -392,7 +382,7 @@ export const TrackPlayer = ({
                             size="icon"
                             variant="ghost"
                             className="fixed top-12 left-8"
-                            onClick={router.back}
+                            onClick={() => router.push("/")}
                         >
                             <ArrowLeftIcon className="size-4" />
                         </Button>

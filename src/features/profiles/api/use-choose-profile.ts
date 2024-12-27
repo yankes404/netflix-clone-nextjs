@@ -11,7 +11,6 @@ export const useChooseProfile = () => {
     const mutation = useMutation({
         mutationFn: async (id: string) => await chooseProfile(id),
         onSettled: (data) => {
-            console.log(data)
             if (data?.success) {
                 router.push(`/`);
             }

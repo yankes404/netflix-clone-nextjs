@@ -47,3 +47,8 @@ export function stringToHex(str: string) {
     .map(char => char.charCodeAt(0).toString(16).padStart(2, '0'))
     .join('');
 }
+
+export const getFileIdFromPath = (path: string) => {
+  const parts = path.split("/");
+  return parts[parts.length - 1];
+}

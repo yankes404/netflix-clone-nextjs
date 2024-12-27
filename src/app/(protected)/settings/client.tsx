@@ -1,12 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { useSession } from "next-auth/react";
+import { useMemo, useState } from "react";
 
 import { SettingValue } from "@/components/setting-value";
 import { EditUserNameModal } from "@/features/settings/components/edit-user-name-modal";
 import { EditUserEmailModal } from "@/features/settings/components/edit-user-email-modal";
-import { ErrorMessage } from "@/components/error-message";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { format } from "date-fns";
@@ -21,10 +19,13 @@ import Link from "next/link";
 import { SettingField } from "@/components/setting-field";
 import { CopyValueButton } from "@/components/copy-value-button";
 import { useSendVerificationEmail } from "@/features/settings/api/use-send-verification-email";
+import { UserType } from "@/features/auth/types";
 
-export const SettingsClient = () => {
-    const { data: session } = useSession();
+interface Props {
+    user: UserType;
+}
 
+export const SettingsClient = ({ user }: Props) => {
     const { mutate: sendVerificationEmail, isPending: isSendingVerificationEmail } = useSendVerificationEmail();
     
     const [page, setPage] = useQueryState("page", parseAsStringEnum(allSettingPages).withDefault(SettingPageEnum.GENERAL));
@@ -33,11 +34,18 @@ export const SettingsClient = () => {
     const [isEditUserEmailModalOpen, setIsEditUserEmailModalOpen] = useState(false);
     const [isEditUserPasswordModalOpen, setIsEditUserPasswordModalOpen] = useState(false);
 
-    if (!session || !session.user) {
-        return (
-            <ErrorMessage message="You're not logged in" className="mt-4" />
-        )
-    }
+    const currentPlanName = useMemo(() => {
+        if (user && user.currentPlan) {
+            const currentPlan = plans[user.currentPlan];
+            if (!currentPlan) {
+                return user.currentPlan;
+            }
+
+            return currentPlan.name;
+        }
+
+        return "None";
+    }, [user]);
 
     const openEditUserNameModal = () => setIsEditUserNameModalOpen(true);
     const openEditUserEmailModal = () => setIsEditUserEmailModalOpen(true);
@@ -86,17 +94,17 @@ export const SettingsClient = () => {
                         <div className="flex flex-col w-full px-6 pb-6">
                             <SettingValue
                                 label="User ID"
-                                value={session.user.id}
+                                value={user.id}
                             />
                             <SettingValue
                                 label="User Name"
-                                value={session.user.name}
+                                value={user.name}
                                 canEdit
                                 onEditOpen={openEditUserNameModal}
                             />
                             <SettingValue
                                 label="User Email"
-                                value={session.user.email}
+                                value={user.email}
                                 canEdit
                                 onEditOpen={openEditUserEmailModal}
                             />
@@ -119,10 +127,10 @@ export const SettingsClient = () => {
                             >
                                 <div className="flex flex-col gap-2 items-end">
                                     <CopyValueButton
-                                        value={session.user.emailVerified ? format(session.user.emailVerified, "PPP") : "Not verified"}
+                                        value={user.emailVerified ? format(user.emailVerified, "PPP") : "Not verified"}
                                         disabled
                                     />
-                                    {!session.user.emailVerified && (
+                                    {!user.emailVerified && (
                                         <Button
                                             size="sm"
                                             variant="outline"
@@ -154,14 +162,14 @@ export const SettingsClient = () => {
                         <div className="flex flex-col w-full px-6 pb-6">
                             <SettingValue
                                 label="Current Plan"
-                                value={session.user.currentPlan ? plans[session.user.currentPlan].name : "None"}
+                                value={currentPlanName}
                                 disabled
                             />
                             <div className="w-full flex pt-4">
-                                {session.user.isSubscribed ? (
+                                {user.isSubscribed ? (
                                     <Button asChild>
                                         <Link
-                                            href={`${process.env.NEXT_PUBLIC_STRIPE_PORTAL_URL}?prefilled_email=${session.user.email}`}
+                                            href={`${process.env.NEXT_PUBLIC_STRIPE_PORTAL_URL}?prefilled_email=${user.email}`}
                                         >
                                             Manage Subscription
                                         </Link>

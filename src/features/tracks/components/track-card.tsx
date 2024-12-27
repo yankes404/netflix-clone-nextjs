@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ProfilesListButton } from "@/features/profiles/components/profiles-list-button";
 import { PlayIcon } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 interface Props {
@@ -23,10 +22,9 @@ export const TrackCard = ({
     return (
         <Card className="group">
             <div className="relative w-full aspect-video">
-                <Image
+                <img
                     src={image}
                     alt={title}
-                    fill
                     className="w-full object-cover rounded-t-lg"
                 />
             </div>

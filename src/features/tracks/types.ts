@@ -33,3 +33,11 @@ export type HomePageDataResRow = Omit<HomePageDataRow, "trackIds"> & {
     tracks: Track[];
 }
 export type HomePageDataRes = Array<HomePageDataResRow>
+
+export type TrackDetails = {
+    track: Track;
+    currentEpisode?: Episode;
+    seasons?: PopulatedSeason[];
+    nextEpisode?: MiniEpisode | null;
+    time?: number;
+}
