@@ -144,6 +144,10 @@ export const TrackPlayer = ({
         // * The autoplay feature is blocked by most popular browsers due to security reasons. Only popular websites like YouTube or Netflix can autoplay with volume, and only after the user has interacted with the website.
     }
 
+    const playEpisode = (episode: MiniEpisode) => {
+        window.location.assign(`/watch/${data.track.id}?episode_id=${episode.id}`);
+    }
+
     useEffect(() => {
         if (videoRef.current) {
             const interval = setInterval(() => {
@@ -501,9 +505,9 @@ export const TrackPlayer = ({
                                                                 <AccordionTrigger>{season.title}</AccordionTrigger>
                                                                 <AccordionContent>
                                                                     {season.episodes.map((episode) => (
-                                                                        <Link
+                                                                        <button
                                                                             key={episode.id}
-                                                                            href={`/watch/${data.track.id}?episode_id=${episode.id}`}
+                                                                            onClick={() => playEpisode(episode)}
                                                                             className={cn("text-xs font-medium text-neutral-200 p-2.5 rounded-md transition hover:bg-neutral-900 w-full flex justify-between hover:text-white", episode.id === data.currentEpisode?.id && "pointer-events-none text-white bg-neutral-900")}
                                                                         >
                                                                             <p>
@@ -514,7 +518,7 @@ export const TrackPlayer = ({
                                                                                     Currently Watching
                                                                                 </p>
                                                                             )}
-                                                                        </Link>
+                                                                        </button>
                                                                     ))}
                                                                 </AccordionContent>
                                                             </AccordionItem>
