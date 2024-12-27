@@ -19,11 +19,11 @@ export const Hero = () => {
             <div className="max-w-screen-2xl mx-auto w-full h-full pb-24 flex flex-col justify-end relative z-10">
                 {data && (
                     <>
-                        <Image
+                        <img
                             src={data.logo}
                             alt={data.title}
-                            width={514}
-                            height={126}
+                            // width={514}
+                            // height={126}
                             className="hero-logo object-cover"
                         />
                         <div className="mt-14 flex gap-3">
