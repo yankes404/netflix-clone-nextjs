@@ -9,7 +9,7 @@ import {
 } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
+
 import {
     ArrowLeftIcon,
     FolderIcon,
@@ -345,12 +345,11 @@ export const TrackPlayer = ({
                 }}
             >
                 <div className="flex flex-col items-center justify-center w-full h-full bg-black/85">
-                    <Image
+                    <img
                         src={data.track.logo}
                         alt={data.track.title}
                         width={214}
                         height={54}
-                        style={{ height: "auto", width: "auto" }}
                     />
                     <h1 className="mt-8 text-2xl font-bold drops">
                         Video Ended
