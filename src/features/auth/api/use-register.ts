@@ -16,7 +16,7 @@ export const useRegister = () => {
         ) => await register(values),
         onSuccess: (data) => {
             if (data?.success) {
-                router.push("/profiles/create");
+                window.location.assign("/profiles/create");
             }
         },
         onError: () => {

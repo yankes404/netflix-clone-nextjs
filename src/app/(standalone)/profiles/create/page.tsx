@@ -1,7 +1,9 @@
-import { auth } from "@/auth";
-import { redirect } from "next/navigation";
-import { CreateProfileClient } from "./client";
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
+
+import { auth } from "@/auth";
+
+import { CreateProfileForm } from "@/features/profiles/components/create-profile-form"
 
 export const metadata: Metadata = {
     title: "Create Profile - Netflix"
@@ -12,7 +14,11 @@ const CreateProfilePage = async () => {
 
     if (!session || !session.user) return redirect("/sign-in");
 
-    return <CreateProfileClient />
+    return (
+        <div className="w-full flex justify-center mt-8">
+            <CreateProfileForm />
+        </div>
+    )
 }
  
 export default CreateProfilePage;
