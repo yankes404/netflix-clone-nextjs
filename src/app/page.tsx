@@ -1,7 +1,9 @@
+import { Metadata } from "next";
+
 import { auth } from "@/auth";
+
 import { Client } from "./client";
 import { ClientLanding } from "./client-landing";
-import { Metadata } from "next";
 
 export const metadata: Metadata = {
     title: "Home - Netflix"

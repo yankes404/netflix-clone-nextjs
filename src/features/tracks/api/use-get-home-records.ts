@@ -1,5 +1,7 @@
-import { stringToHex } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
+
+import { stringToHex } from "@/lib/utils";
+
 import { homePageRecords } from "../constants";
 import { getHomeRecords } from "../actions";
 

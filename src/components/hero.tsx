@@ -1,9 +1,11 @@
 "use client";
 
-import { Button } from "./ui/button";
-import { LoaderCircleIcon, PlayIcon } from "lucide-react";
 import Link from "next/link";
+import { LoaderCircleIcon, PlayIcon } from "lucide-react";
+
 import { useGetRandomTrack } from "@/features/tracks/api/use-get-random-track";
+
+import { Button } from "./ui/button";
 
 export const Hero = () => {
     const { data, isLoading } = useGetRandomTrack();

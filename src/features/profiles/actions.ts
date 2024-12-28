@@ -1,14 +1,14 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { eq, and } from "drizzle-orm";
 import { z } from "zod";
 
+import { auth } from "@/auth";
 import { db } from "@/db/utils";
 import { profileLists, profiles, tracks } from "@/db/schemas";
 
 import { createProfileSchema } from "./schemas";
-import { auth } from "@/auth";
-import { cookies } from "next/headers";
 import { Profile } from "./types";
 import { plans } from "../subscriptions/constants";
 

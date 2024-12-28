@@ -1,5 +1,5 @@
-import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { useMutation } from "@tanstack/react-query";
 
 import { EditUserPasswordType } from "../types";
 import { updateUserPassword } from "../actions";

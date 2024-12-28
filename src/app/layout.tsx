@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
-import { SessionProvider } from "next-auth/react";
-import { QueryProvider } from "@/components/query-provider";
-import { cn } from "@/lib/utils";
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
+import { SessionProvider } from "next-auth/react";
+
+import { cn } from "@/lib/utils";
+import { QueryProvider } from "@/components/query-provider";
 import { Toaster } from "@/components/ui/sonner";
+
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 

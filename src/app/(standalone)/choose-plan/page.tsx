@@ -1,7 +1,9 @@
-import { auth } from "@/auth";
-import { redirect } from "next/navigation";
-import { ChoosePlanClient } from "./client";
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
+
+import { auth } from "@/auth";
+
+import { ChoosePlanClient } from "./client";
 
 export const metadata: Metadata = {
     title: "Choose Plan - Netflix"

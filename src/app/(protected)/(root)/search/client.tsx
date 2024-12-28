@@ -1,21 +1,34 @@
 "use client";
 
+import { useDebounce } from 'use-debounce';
+import { SearchIcon } from "lucide-react"
+import {
+    parseAsArrayOf,
+    parseAsBoolean,
+    parseAsString,
+    parseAsStringEnum,
+    useQueryState
+} from 'nuqs'
+
+import { allCategories } from "@/features/categories/constants";
+import { Category } from "@/features/categories/types";
+import {
+    getAllCategoriesIds,
+    getCategoryTitles
+} from "@/features/categories/utils";
+import { useSearchTracks } from "@/features/tracks/api/use-search-tracks";
+import { TrackCard } from "@/features/tracks/components/track-card";
+import { TrackType } from "@/features/tracks/types";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger
+} from "@/components/ui/popover";
 import { Skeleton } from "@/components/ui/skeleton";
-import { allCategories } from "@/features/categories/constants";
-import { Category } from "@/features/categories/types";
-import { getAllCategoriesIds, getCategoryTitles } from "@/features/categories/utils";
-import { useSearchTracks } from "@/features/tracks/api/use-search-tracks";
-import { TrackCard } from "@/features/tracks/components/track-card";
-import { TrackType } from "@/features/tracks/types";
-import { SearchIcon } from "lucide-react"
-import { useDebounce } from 'use-debounce';
-
-import { parseAsArrayOf, parseAsBoolean, parseAsString, parseAsStringEnum, useQueryState } from 'nuqs'
 
 interface Props {
     title?: string;

@@ -1,16 +1,17 @@
+import { cookies } from "next/headers"
+import "next-auth";
+import { eq } from "drizzle-orm";
+import bcrypt from "bcryptjs";
 import NextAuth from "next-auth"
 import GitHub from "next-auth/providers/github"
 import Google from "next-auth/providers/google"
 import Credentials from "next-auth/providers/credentials"
 import { DrizzleAdapter } from "@auth/drizzle-adapter"
+
 import { db } from "@/db/utils";
 import { users } from "@/db/schemas";
-import { eq } from "drizzle-orm";
 
-import "next-auth";
 import { loginSchema } from "./features/auth/schemas"
-import bcrypt from "bcryptjs";
-import { cookies } from "next/headers"
 import { SubscriptionType } from "./features/subscriptions/types"
 
 declare module "next-auth" {

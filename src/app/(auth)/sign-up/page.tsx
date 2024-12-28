@@ -1,7 +1,8 @@
-import { auth } from "@/auth";
-import { SignUpCard } from "@/features/auth/components/sign-up-card";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
+
+import { auth } from "@/auth";
+import { SignUpCard } from "@/features/auth/components/sign-up-card";
 
 export const metadata: Metadata = {
     title: "Sign up - Netflix"

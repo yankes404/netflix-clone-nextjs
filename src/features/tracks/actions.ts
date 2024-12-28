@@ -1,13 +1,31 @@
 "use server";
 
-import { and, desc, eq } from "drizzle-orm";
+import {
+    and,
+    desc,
+    eq
+} from "drizzle-orm";
 
 import { auth } from "@/auth";
-import { episodes, tracks, watchTimes } from "@/db/schemas";
+import {
+    episodes,
+    tracks,
+    watchTimes
+} from "@/db/schemas";
 import { db } from "@/db/utils";
 
-import { Episode, HomePageDataRes, HomePageDataResRow, MiniEpisode, PopulatedSeason, SearchTracksProps, Track, TrackDetails, TrackType } from "./types";
 import { Category } from "../categories/types";
+import {
+    Episode,
+    HomePageDataRes,
+    HomePageDataResRow,
+    MiniEpisode,
+    PopulatedSeason,
+    SearchTracksProps,
+    Track,
+    TrackDetails,
+    TrackType
+} from "./types";
 import { homePageRecords } from "./constants";
 
 export const getTrackById = async (

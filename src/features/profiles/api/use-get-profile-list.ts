@@ -1,9 +1,9 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useProfileId } from "./use-profile-id";
 
 import { getProfileList } from "../actions";
+import { useProfileId } from "./use-profile-id";
 
 export const useGetProfileList = () => {
     const profileId = useProfileId();

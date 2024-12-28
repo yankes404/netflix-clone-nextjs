@@ -1,25 +1,25 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
+import { parseAsStringEnum, useQueryState } from "nuqs";
+import { format } from "date-fns";
 
-import { SettingValue } from "@/components/setting-value";
 import { EditUserNameModal } from "@/features/settings/components/edit-user-name-modal";
 import { EditUserEmailModal } from "@/features/settings/components/edit-user-email-modal";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { format } from "date-fns";
 import { EditUserPasswordModal } from "@/features/settings/components/edit-user-password-modal";
-import { parseAsStringEnum, useQueryState } from "nuqs";
 import { allSettingPages } from "@/features/settings/constants";
 import { SettingPageEnum } from "@/features/settings/types";
 import { EditProfilesForm } from "@/features/profiles/components/edit-profiles-form";
 import { plans } from "@/features/subscriptions/constants";
+import { UserType } from "@/features/auth/types";
+import { useSendVerificationEmail } from "@/features/settings/api/use-send-verification-email";
+import { SettingValue } from "@/components/setting-value";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { SettingField } from "@/components/setting-field";
 import { CopyValueButton } from "@/components/copy-value-button";
-import { useSendVerificationEmail } from "@/features/settings/api/use-send-verification-email";
-import { UserType } from "@/features/auth/types";
 
 interface Props {
     user: UserType;

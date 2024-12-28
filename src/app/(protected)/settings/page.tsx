@@ -1,5 +1,5 @@
-import { Metadata } from "next";
 import { Suspense } from "react";
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";

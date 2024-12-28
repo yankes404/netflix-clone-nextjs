@@ -1,8 +1,8 @@
 "use server";
 
+import { sessionMiddleware } from "../../lib/middlewares";
 import { getStripe } from "./utils";
 import { plans } from "./constants";
-import { sessionMiddleware } from "../../lib/middlewares";
 import { StripePaymentStatus, SubscriptionType } from "./types";
 import { createVerificationToken } from "../auth/actions";
 

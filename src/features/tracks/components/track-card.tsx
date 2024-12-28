@@ -1,10 +1,16 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ProfilesListButton } from "@/features/profiles/components/profiles-list-button";
-import { PlayIcon } from "lucide-react";
 import Link from "next/link";
+import { PlayIcon } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import {
+    Card,
+    CardDescription,
+    CardHeader,
+    CardTitle
+} from "@/components/ui/card";
+import { ProfilesListButton } from "@/features/profiles/components/profiles-list-button";
 
 interface Props {
     id: string;

@@ -1,6 +1,8 @@
 import Image from "next/image"
-import { ProfileImage } from "../types"
+
 import { cn } from "@/lib/utils";
+
+import { ProfileImage } from "../types"
 
 interface AvatarButtonProps {
     value: ProfileImage;

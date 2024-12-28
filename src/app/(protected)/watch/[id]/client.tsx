@@ -3,10 +3,10 @@
 import { useEffect, useState, useTransition, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { LoaderCircleIcon } from "lucide-react";
 
 import { TrackPlayer } from "@/features/tracks/components/track-player";
 import { TrackDetails } from "@/features/tracks/types";
-import { LoaderCircleIcon } from "lucide-react";
 
 interface Props {
     data: TrackDetails;

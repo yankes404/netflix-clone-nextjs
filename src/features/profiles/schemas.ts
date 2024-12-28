@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { ProfileImage } from "./types";
 
 export const createProfileSchema = z.object({

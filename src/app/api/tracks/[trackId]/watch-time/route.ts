@@ -1,5 +1,6 @@
-import { saveWatchTime } from "@/features/tracks/actions";
 import { NextRequest, NextResponse } from "next/server";
+
+import { saveWatchTime } from "@/features/tracks/actions";
 
 export const POST = async (
     req: NextRequest,

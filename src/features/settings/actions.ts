@@ -1,13 +1,15 @@
 "use server";
 
+import { eq } from "drizzle-orm";
+import bcrypt from "bcryptjs";
+
 import { auth } from "@/auth";
-import { EditUserEmailType, EditUserNameType, EditUserPasswordType } from "./types";
-import { editUserEmailSchema, editUserNameSchema, editUserPasswordSchema } from "./schemas";
 import { db } from "@/db/utils";
 import { users } from "@/db/schemas";
-import { eq } from "drizzle-orm";
+
 import { createVerificationToken, getProvider } from "../auth/actions";
-import bcrypt from "bcryptjs";
+import { EditUserEmailType, EditUserNameType, EditUserPasswordType } from "./types";
+import { editUserEmailSchema, editUserNameSchema, editUserPasswordSchema } from "./schemas";
 
 export const updateUserName = async (values: EditUserNameType) => {
     try {

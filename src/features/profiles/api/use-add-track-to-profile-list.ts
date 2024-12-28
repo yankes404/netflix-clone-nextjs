@@ -1,9 +1,11 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
-import { addTrackToProfileList } from "../actions";
 import { toast } from "sonner";
+import { useMutation } from "@tanstack/react-query";
+
 import { queryClient } from "@/components/query-provider";
+
+import { addTrackToProfileList } from "../actions";
 import { useProfileId } from "./use-profile-id";
 
 export const useAddTrackToProfileList = () => {

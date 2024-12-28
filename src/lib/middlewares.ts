@@ -1,7 +1,8 @@
 "use server";
 
-import { auth } from "@/auth";
 import { Session } from "@auth/core/types";
+
+import { auth } from "@/auth";
 
 export const sessionMiddleware = async <T>(callbackFn: (session: Session) => T | Promise<T>, defaultValue?: T) => {
     const session = await auth();

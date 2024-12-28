@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+
 import { getRandomTrack } from "../actions";
 
 export const useGetRandomTrack = () => {

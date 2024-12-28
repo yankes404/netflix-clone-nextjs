@@ -5,11 +5,11 @@ import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
 
+import { auth, signIn } from "@/auth";
 import { db } from "@/db/utils";
 import { accounts, users, verificationTokens } from "@/db/schemas";
-
 import { registerSchema, loginSchema } from "@/features/auth/schemas";
-import { auth, signIn } from "@/auth";
+
 import { getResend } from "../mails/utils";
 import { VerificationTokenTemplate } from "../mails/components/verification-token-template";
 import { getStripe } from "../subscriptions/utils";

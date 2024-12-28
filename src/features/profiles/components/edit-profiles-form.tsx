@@ -1,23 +1,43 @@
 "use client";
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useGetProfiles } from "../api/use-get-profiles";
 import { useState } from "react";
-import { LoaderCircleIcon, LoaderIcon, PlusIcon } from "lucide-react";
-import { MiniProfile } from "../types";
-import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { AvatarSelector } from "./avatar-selector";
-import Image from "next/image";
-import { getProfileImage } from "@/lib/utils";
-import { z } from "zod";
-import { createProfileSchema } from "../schemas";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useUpdateProfile } from "../api/use-update-profile";
 import Link from "next/link";
+import Image from "next/image";
+import { LoaderCircleIcon, LoaderIcon, PlusIcon } from "lucide-react";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import {
+    Card,
+    CardHeader,
+    CardTitle,
+    CardContent
+} from "@/components/ui/card";
+import {
+    Form,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormControl,
+    FormMessage
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { AvatarSelector } from "./avatar-selector";
+import { getProfileImage } from "@/lib/utils";
+
+import { createProfileSchema } from "../schemas";
+import { useUpdateProfile } from "../api/use-update-profile";
+import { useGetProfiles } from "../api/use-get-profiles";
+import { MiniProfile } from "../types";
 
 export const EditProfilesForm = () => {
     const { data: profiles, isLoading } = useGetProfiles();

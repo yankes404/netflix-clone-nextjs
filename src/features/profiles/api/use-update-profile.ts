@@ -1,11 +1,11 @@
-import { useMutation } from "@tanstack/react-query"
-
 import { z } from "zod"
 import { toast } from "sonner"
+import { useMutation } from "@tanstack/react-query"
+
+import { queryClient } from "@/components/query-provider"
 
 import { createProfileSchema } from "../schemas"
 import { updateProfile } from "../actions"
-import { queryClient } from "@/components/query-provider"
 
 export const useUpdateProfile = (profileId?: string) => {
     const mutation = useMutation({

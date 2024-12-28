@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+
 import { SearchTracksProps } from "../types";
 import { searchTracks } from "../actions";
 

@@ -1,8 +1,8 @@
+import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 
 import { EditUserEmailType } from "../types";
 import { updateUserEmail } from "../actions";
-import { toast } from "sonner";
 
 export const useUpdateUserEmail = () => {
     const mutation = useMutation({

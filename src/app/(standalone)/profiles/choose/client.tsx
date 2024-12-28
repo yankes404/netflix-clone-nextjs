@@ -1,12 +1,12 @@
 "use client";
 
-import { useGetProfiles } from "@/features/profiles/api/use-get-profiles"
-import { getProfileImage } from "@/lib/utils"
-import Image from "next/image"
-
-import { LoaderCircleIcon, PlusIcon } from "lucide-react";
-import { useChooseProfile } from "@/features/profiles/api/use-choose-profile";
 import Link from "next/link";
+import Image from "next/image"
+import { LoaderCircleIcon, PlusIcon } from "lucide-react";
+
+import { getProfileImage } from "@/lib/utils"
+import { useGetProfiles } from "@/features/profiles/api/use-get-profiles"
+import { useChooseProfile } from "@/features/profiles/api/use-choose-profile";
 
 export const ChooseProfileClient = () => {
     const { data: profiles, isLoading } = useGetProfiles();

@@ -1,5 +1,7 @@
-import { episodes, tracks } from "@/db/schemas";
 import { InferSelectModel } from "drizzle-orm";
+
+import { episodes, tracks } from "@/db/schemas";
+
 import { Category } from "../categories/types";
 
 export type Track = InferSelectModel<typeof tracks>;

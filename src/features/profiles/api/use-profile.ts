@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useProfileId } from "./use-profile-id";
 import { useQuery } from "@tanstack/react-query";
+
 import { getProfile } from "../actions";
+import { useProfileId } from "./use-profile-id";
 
 export const useProfile = (
     profileId?: string

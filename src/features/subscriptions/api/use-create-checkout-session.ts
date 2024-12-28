@@ -1,6 +1,7 @@
-import { useRouter } from "next/navigation"
-import { useMutation } from "@tanstack/react-query"
-import { toast } from "sonner"
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useMutation } from "@tanstack/react-query";
+
 import { createCheckout } from "../actions";
 import { SubscriptionType } from "../types";
 

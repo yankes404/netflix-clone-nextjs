@@ -1,9 +1,10 @@
+import { NextRequest, NextResponse } from "next/server";
+import { headers } from "next/headers";
+import { and, eq } from "drizzle-orm";
+
 import { users } from "@/db/schemas";
 import { db } from "@/db/utils";
 import { getStripe } from "@/features/subscriptions/utils";
-import { headers } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
-import { and, eq } from "drizzle-orm";
 import { findPlanByPriceId } from "@/features/subscriptions/helpers";
 
 const stripe = getStripe();

@@ -1,9 +1,10 @@
 "use client";
 
+import { LoaderCircle } from "lucide-react";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+
 import { useGetProfileList } from "@/features/profiles/api/use-get-profile-list";
 import { TrackCard } from "@/features/tracks/components/track-card";
-import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
-import { LoaderCircle } from "lucide-react";
 
 export const MyListClient = () => {
     const { data, isPending } = useGetProfileList();

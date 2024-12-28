@@ -2,7 +2,6 @@ import { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
-
 import { CreateProfileForm } from "@/features/profiles/components/create-profile-form"
 
 export const metadata: Metadata = {

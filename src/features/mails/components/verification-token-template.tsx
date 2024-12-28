@@ -1,6 +1,14 @@
 import { FC } from "react";
 
-import { Html, Head, Font, Body, Heading, Text, Link } from "@react-email/components";
+import {
+    Html,
+    Head,
+    Font,
+    Body,
+    Heading,
+    Text,
+    Link
+} from "@react-email/components";
 
 interface TextLinkProps {
     href: string;

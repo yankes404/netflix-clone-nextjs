@@ -1,13 +1,13 @@
 "use client";
 
-import { Footer } from "@/components/footer";
-import { Header } from "@/components/header";
-import { Hero } from "@/components/hero";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Category } from "@/features/categories/types";
 import { getCategoryTitles } from "@/features/categories/utils";
 import { useGetHomeRecords } from "@/features/tracks/api/use-get-home-records";
 import { TrackCard } from "@/features/tracks/components/track-card";
+import { Footer } from "@/components/footer";
+import { Header } from "@/components/header";
+import { Hero } from "@/components/hero";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const Client = () => {
     const { data, isLoading } = useGetHomeRecords();

@@ -1,5 +1,6 @@
-import { profiles } from "@/db/schemas";
 import { InferSelectModel } from "drizzle-orm";
+
+import { profiles } from "@/db/schemas";
 
 export enum ProfileImage {
     RED = "red",

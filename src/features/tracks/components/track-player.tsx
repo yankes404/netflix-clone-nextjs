@@ -1,18 +1,64 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Slider } from "@/components/ui/slider";
-import { cn, formatSeconds, formatSecondsTwo, isNumber } from "@/lib/utils";
-import { ArrowLeftIcon, FolderIcon, FullscreenIcon, GaugeIcon, LoaderCircleIcon, MinimizeIcon, PauseIcon, PlayIcon, SkipForwardIcon, Volume1Icon, Volume2Icon, VolumeIcon, VolumeOffIcon } from "lucide-react";
+import {
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState
+} from "react";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { MiniEpisode, PopulatedSeason, TrackDetails, TrackType } from "../types";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { useSaveWatchTime } from "../api/use-save-watch-time";
 import Link from "next/link";
 import Image from "next/image";
+import {
+    ArrowLeftIcon,
+    FolderIcon,
+    FullscreenIcon,
+    GaugeIcon,
+    LoaderCircleIcon,
+    MinimizeIcon,
+    PauseIcon,
+    PlayIcon,
+    SkipForwardIcon,
+    Volume1Icon,
+    Volume2Icon,
+    VolumeIcon,
+    VolumeOffIcon
+} from "lucide-react";
+
+import {
+    cn,
+    formatSeconds,
+    formatSecondsTwo,
+    isNumber
+} from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger
+} from "@/components/ui/popover";
+import { Slider } from "@/components/ui/slider";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger
+} from "@/components/ui/tooltip";
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger
+} from "@/components/ui/accordion";
+
+import {
+    MiniEpisode,
+    PopulatedSeason,
+    TrackDetails,
+    TrackType
+} from "../types";
+import { useSaveWatchTime } from "../api/use-save-watch-time";
 
 const speeds = [
     0.5,

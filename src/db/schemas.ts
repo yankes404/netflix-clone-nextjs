@@ -1,8 +1,3 @@
-import { verificationTokenValidityLength } from "@/config";
-import { getAllCategoriesIds } from "@/features/categories/utils";
-import { ProfileImage } from "@/features/profiles/types";
-import { SubscriptionType } from "@/features/subscriptions/types";
-import { TrackType } from "@/features/tracks/types";
 import { sql } from "drizzle-orm";
 import {
   timestamp,
@@ -13,6 +8,12 @@ import {
   pgEnum,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
+
+import { verificationTokenValidityLength } from "@/config";
+import { getAllCategoriesIds } from "@/features/categories/utils";
+import { ProfileImage } from "@/features/profiles/types";
+import { SubscriptionType } from "@/features/subscriptions/types";
+import { TrackType } from "@/features/tracks/types";
 
 const allCategoriesIds = getAllCategoriesIds() as string[];
 export const trackCategories = pgEnum("track_category", allCategoriesIds as [string, ...string[]]);

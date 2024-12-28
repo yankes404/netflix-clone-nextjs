@@ -1,8 +1,8 @@
 import { useSession } from "next-auth/react";
+import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query"
 
 import { createVerificationToken } from "@/features/auth/actions";
-import { toast } from "sonner";
 
 export const useSendVerificationEmail = () => {
     const { data: session } = useSession();
