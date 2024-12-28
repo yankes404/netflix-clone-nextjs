@@ -46,16 +46,19 @@ export const register = async (
             .values({
                 name,
                 email,
-                password: hashedPassword
+                password: hashedPassword,
+                emailVerified: process.env.NEXT_PUBLIC_USE_RESEND === "TRUE" ? null : new Date()
             });
 
-        const { error: verificationTokenError } = await createVerificationToken(
-            email,
-            name,
-            true
-        );
-
-        if (verificationTokenError) return { error: verificationTokenError }
+        if (process.env.NEXT_PUBLIC_USE_RESEND === "TRUE") {
+            const { error: verificationTokenError } = await createVerificationToken(
+                email,
+                name,
+                true
+            );
+    
+            if (verificationTokenError) return { error: verificationTokenError }
+        }
 
         await signIn("credentials", { email, password, redirect: false });
 
@@ -144,19 +147,21 @@ export const createVerificationToken = async (
 
             const token = createdTokens[0];
 
-            const { error } = await resend.emails.send({
-                from: `Netflix Clone <${process.env.NEXT_PUBLIC_EMAIL_ADDRESS!}>`,
-                to: [email],
-                subject: "Email Verification",
-                react: VerificationTokenTemplate({ email, name, token: token.token })
-            });
-
-            if (error) {
-                if (process.env.NODE_ENV !== "production") {
-                    console.error(error);
+            if (process.env.NEXT_PUBLIC_USE_RESEND === "TRUE") {
+                const { error } = await resend.emails.send({
+                    from: `Netflix Clone <${process.env.NEXT_PUBLIC_EMAIL_ADDRESS!}>`,
+                    to: [email],
+                    subject: "Email Verification",
+                    react: VerificationTokenTemplate({ email, name, token: token.token })
+                });
+    
+                if (error) {
+                    if (process.env.NODE_ENV !== "production") {
+                        console.error(error);
+                    }
+                    
+                    return { error: "Something went wrong" }
                 }
-                
-                return { error: "Something went wrong" }
             }
 
             return { success: true }

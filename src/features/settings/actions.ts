@@ -92,10 +92,21 @@ export const updateUserEmail = async (values: EditUserEmailType) => {
             return { error: "You cannot update your email address when you logged in by Google or Github" }
         }
 
-        const { error } = await createVerificationToken(email, user.name ?? "CANNOT_READ_USER_NAME");
+        if (process.env.NEXT_PUBLIC_USE_RESEND === "TRUE") {
+            const { error } = await createVerificationToken(email, user.name ?? "CANNOT_READ_USER_NAME");
+    
+            if (error) {
+                return { error }
+            }
+        } else {
 
-        if (error) {
-            return { error }
+            await db
+                .update(users)
+                .set({
+                    email,
+                    emailVerified: new Date()
+                })
+                .where(eq(users.id, user.id))
         }
 
         return { success: true }

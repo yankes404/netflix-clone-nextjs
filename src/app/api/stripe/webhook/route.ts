@@ -11,8 +11,6 @@ const stripe = getStripe();
 export const POST = async (
     req: NextRequest
 ) => {
-    console.log("INVOKED STRIPE WEBHOOK");
-
     const body = await req.text();
     const signature = headers().get("Stripe-Signature") as string;
 

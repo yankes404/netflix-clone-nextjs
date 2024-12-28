@@ -9,7 +9,11 @@ export const useUpdateUserEmail = () => {
         mutationFn: (values: EditUserEmailType) => updateUserEmail(values),
         onSettled: (data) => {
             if (data?.success) {
-                toast.success(`Check your inbox to verify your email address`);
+                if (process.env.NEXT_PUBLIC_USE_RESEND === "TRUE") {
+                    toast.success("Check your inbox to verify email address");
+                } else {
+                    window.location.reload();
+                }
             }
         }
     });

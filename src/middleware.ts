@@ -15,6 +15,12 @@ export default auth(async(req) => {
         return;
     }
 
+    if (nextUrl.pathname === "/email-verification") {
+        if (!req.auth?.user.emailVerified) {
+            return;
+        }
+    }
+
     if (isAuthRoute) {
         if (isLoggedIn) {
             return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
