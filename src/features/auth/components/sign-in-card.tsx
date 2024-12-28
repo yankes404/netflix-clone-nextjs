@@ -92,7 +92,7 @@ export const SignInCard = ()  => {
     return (
         <Card className="w-full lg:w-[500px] rounded-md">
             <CardHeader>
-                <CardTitle className="text-center text-xl">Welcome back</CardTitle>
+                <CardTitle className="text-xl text-center">Welcome back</CardTitle>
             </CardHeader>
             <div className="px-6">
                 <Separator />

@@ -82,7 +82,7 @@ export const EditProfilesForm = () => {
     }
 
     return (
-        <div className="w-full mt-6 flex flex-col gap-y-3">
+        <div className="flex flex-col w-full mt-6 gap-y-3">
             <div className="flex gap-2">
                 <Select
                     value={profile?.id}
@@ -172,12 +172,12 @@ export const EditProfilesForm = () => {
                                         </FormItem>
                                     )}
                                 />
-                                <div className="w-full flex flex-wrap gap-2 mt-2">
+                                <div className="flex flex-wrap w-full gap-2 mt-2">
                                     <Button
                                         size="lg"
                                         variant="primary"
                                         type="submit"
-                                        className="w-full lg:w-auto ml-auto"
+                                        className="w-full ml-auto lg:w-auto"
                                         disabled={isPending}
                                     >
                                         {isPending && (

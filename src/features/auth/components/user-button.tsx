@@ -30,7 +30,7 @@ export const UserButton = () => {
 
     if (isLoading) {
         return (
-            <Skeleton className="size-8 rounded-sm" />
+            <Skeleton className="rounded-sm size-8" />
         )
     }
 
@@ -51,14 +51,14 @@ export const UserButton = () => {
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="outline-none rounded-sm drop-shadow-lg">
-                <Avatar className="size-8 rounded-sm">
+            <DropdownMenuTrigger className="rounded-sm outline-none drop-shadow-lg">
+                <Avatar className="rounded-sm size-8">
                     <AvatarImage
                         src={getProfileImage(profile.image)}
                         alt="User Profile"
                         className="rounded-sm"
                     />
-                    <AvatarFallback className="bg-red-500 rounded-sm flex items-center justify-center text-sm font-semibold select-none">
+                    <AvatarFallback className="flex items-center justify-center text-sm font-semibold bg-red-500 rounded-sm select-none">
                         {profile.name.charAt(0).toUpperCase()}
                     </AvatarFallback>
                 </Avatar>
@@ -72,7 +72,7 @@ export const UserButton = () => {
                     onClick={() => router.push("/settings")}
                 >
                     <div className="flex items-center gap-1.5">
-                        <SettingsIcon className="size-4 mr-0" />
+                        <SettingsIcon className="mr-0 size-4" />
                         Settings
                     </div>
                 </DropdownMenuItem>
@@ -80,7 +80,7 @@ export const UserButton = () => {
                     onClick={() => router.push("/profiles/choose")}
                 >
                     <div className="flex items-center gap-1.5">
-                        <UsersIcon className="size-4 mr-0" />
+                        <UsersIcon className="mr-0 size-4" />
                         Switch Profile
                     </div>
                 </DropdownMenuItem>
@@ -88,7 +88,7 @@ export const UserButton = () => {
                     onClick={() => router.push("/my-list")}
                 >
                     <div className="flex items-center gap-1.5">
-                        <HeartIcon className="size-4 mr-0" />
+                        <HeartIcon className="mr-0 size-4" />
                         Your list
                     </div>
                 </DropdownMenuItem>
@@ -96,7 +96,7 @@ export const UserButton = () => {
                     onClick={() => signOut()}
                 >
                     <div className="flex items-center gap-1.5">
-                        <LogOutIcon className="size-4 mr-0" />
+                        <LogOutIcon className="mr-0 size-4" />
                         Logout
                     </div>
                 </DropdownMenuItem>

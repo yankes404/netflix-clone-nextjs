@@ -31,7 +31,7 @@ export const TrackCard = ({
                 <img
                     src={image}
                     alt={title}
-                    className="w-full object-cover rounded-t-lg"
+                    className="object-cover w-full rounded-t-lg"
                 />
             </div>
             <CardHeader className="relative">
@@ -41,7 +41,7 @@ export const TrackCard = ({
                 <CardDescription>
                     {tags.toLocaleString("en-US").replaceAll(",", ", ")}
                 </CardDescription>
-                <div className="flex gap-x-2 absolute bottom-6 right-6 opacity-0 scale-0 transition-opacity group-hover:opacity-100 group-hover:scale-100 duration-300">
+                <div className="absolute flex transition-opacity duration-300 scale-0 opacity-0 gap-x-2 bottom-6 right-6 group-hover:opacity-100 group-hover:scale-100">
                     <Button
                         size="icon"
                         className="rounded-full !size-7"

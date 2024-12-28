@@ -84,7 +84,7 @@ export const EditUserNameForm = ({ onSuccess }: Props) => {
                     )}
                 />
                 <ErrorMessage message={error} />
-                <div className="mt-2 w-full flex justify-end">
+                <div className="flex justify-end w-full mt-2">
                     <Button
                         type="submit"
                         variant="primary"

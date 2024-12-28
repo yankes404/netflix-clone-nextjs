@@ -18,21 +18,21 @@ export const ChooseProfileClient = () => {
 
     if (isLoading) {
         return (
-            <LoaderCircleIcon className="size-4 animate-spin text-muted-foreground mx-auto mt-8" />
+            <LoaderCircleIcon className="mx-auto mt-8 size-4 animate-spin text-muted-foreground" />
         )
     }
 
     return (
-        <div className="w-full flex flex-col items-center mt-4">
-            <h1 className="font-semibold text-xl">
+        <div className="flex flex-col items-center w-full mt-4">
+            <h1 className="text-xl font-semibold">
                 Choose Profile
             </h1>
-            <div className="w-full flex justify-center mt-4 gap-6 items-center">
+            <div className="flex items-center justify-center w-full gap-6 mt-4">
                 {Array.isArray(profiles) && profiles?.map((profile) => (
                     <button
                         key={profile.id}
                         onClick={() => chooseProfile(profile.id)}
-                        className="p-4 rounded-md hover:bg-neutral-900 transition disabled:pointer-events-none disabled:opacity-50 relative"
+                        className="relative p-4 transition rounded-md hover:bg-neutral-900 disabled:pointer-events-none disabled:opacity-50"
                         disabled={isChoosingProfile}
                     >
                         <Image
@@ -42,14 +42,14 @@ export const ChooseProfileClient = () => {
                             height={64}
                             className="rounded-md"
                         />
-                        <p className="text-sm font-semibold mt-2 text-start">
+                        <p className="mt-2 text-sm font-semibold text-start">
                             {profile.name}
                         </p>
                     </button>
                 ))}
                 <Link
                     href="/profiles/create"
-                    className="size-16 rounded-md border border-neutral-700 bg-neutral-800/75 hover:bg-neutral-800 transition grid place-items-center disabled:pointer-events-none disabled:opacity-50"
+                    className="grid transition border rounded-md size-16 border-neutral-700 bg-neutral-800/75 hover:bg-neutral-800 place-items-center disabled:pointer-events-none disabled:opacity-50"
                 >
                     <PlusIcon className="size-6" />
                 </Link>

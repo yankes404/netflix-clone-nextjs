@@ -30,7 +30,7 @@ export const SettingValue = ({
                     <Button
                         size="icon"
                         variant="secondary"
-                        className="size-7 rounded"
+                        className="rounded size-7"
                         onClick={onEditOpen}
                     >
                         <PenIcon className="!size-3" />

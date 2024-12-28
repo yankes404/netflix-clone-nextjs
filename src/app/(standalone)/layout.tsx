@@ -6,7 +6,7 @@ interface Props {
 
 const StandaloneLayout = ({ children }: Props) => {
     return (
-        <div className="h-screen w-full max-w-screen-2xl mx-auto px-4">
+        <div className="w-full h-screen px-4 mx-auto max-w-screen-2xl">
             <StandaloneHeader />
             {children}
         </div>

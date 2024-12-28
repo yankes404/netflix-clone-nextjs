@@ -15,8 +15,17 @@ import { plans } from "@/features/subscriptions/constants";
 import { UserType } from "@/features/auth/types";
 import { useSendVerificationEmail } from "@/features/settings/api/use-send-verification-email";
 import { SettingValue } from "@/components/setting-value";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+    Tabs,
+    TabsContent,
+    TabsList,
+    TabsTrigger
+} from "@/components/ui/tabs";
+import {
+    Card,
+    CardHeader,
+    CardTitle
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { SettingField } from "@/components/setting-field";
 import { CopyValueButton } from "@/components/copy-value-button";
@@ -70,7 +79,7 @@ export const SettingsClient = ({ user }: Props) => {
                 onValueChange={(value) => setPage(value as SettingPageEnum)}
                 className="w-full"
             >
-                <TabsList className="w-full grid grid-cols-4">
+                <TabsList className="grid w-full grid-cols-4">
                     <TabsTrigger value={SettingPageEnum.GENERAL}>
                         General
                     </TabsTrigger>
@@ -125,7 +134,7 @@ export const SettingsClient = ({ user }: Props) => {
                             <SettingField
                                 label="Email Verified"
                             >
-                                <div className="flex flex-col gap-2 items-end">
+                                <div className="flex flex-col items-end gap-2">
                                     <CopyValueButton
                                         value={user.emailVerified ? format(user.emailVerified, "PPP") : "Not verified"}
                                         disabled
@@ -165,7 +174,7 @@ export const SettingsClient = ({ user }: Props) => {
                                 value={currentPlanName}
                                 disabled
                             />
-                            <div className="w-full flex pt-4">
+                            <div className="flex w-full pt-4">
                                 {user.isSubscribed ? (
                                     <Button asChild>
                                         <Link

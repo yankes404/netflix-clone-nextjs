@@ -88,13 +88,13 @@ export const SearchClient = ({
     }
 
     return (
-        <div className="mt-16 w-full">
-            <div className="w-full flex flex-col items-center justify-center">
+        <div className="w-full mt-16">
+            <div className="flex flex-col items-center justify-center w-full">
                 <h1 className="text-2xl font-semibold">
                     {title}
                 </h1>
                 <div className="relative mt-4">
-                    <SearchIcon className="size-4 text-muted-foreground absolute top-1/2 left-4 -translate-y-1/2" />
+                    <SearchIcon className="absolute -translate-y-1/2 size-4 text-muted-foreground top-1/2 left-4" />
                     <Input
                         className="w-[440px] pl-10"
                         placeholder="Search anything..."
@@ -129,7 +129,7 @@ export const SearchClient = ({
                                 Categories
                             </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-44 flex flex-col gap-y-3 max-h-64 overflow-y-auto categories-popover" align="center" sideOffset={10}>
+                        <PopoverContent className="flex flex-col overflow-y-auto w-44 gap-y-3 max-h-64 categories-popover" align="center" sideOffset={10}>
                             {allCategories.map((category) => (
                                 <div
                                     key={category.id}
@@ -153,7 +153,7 @@ export const SearchClient = ({
                 <h2 className="text-lg font-semibold">
                     Found <span className="text-red-500">{tracks?.length.toLocaleString("en-US")} results</span>
                 </h2>
-                <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 mt-4 gap-4">
+                <div className="grid w-full grid-cols-1 gap-4 mt-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                     {isLoading ? Array.from({ length: 10 }).map((_, key) => (
                         <Skeleton
                             key={key}

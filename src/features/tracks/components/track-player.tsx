@@ -344,7 +344,7 @@ export const TrackPlayer = ({
                     backgroundImage: `url(${data.track.poster})`
                 }}
             >
-                <div className="w-full h-full bg-black/85 flex flex-col items-center justify-center">
+                <div className="flex flex-col items-center justify-center w-full h-full bg-black/85">
                     <Image
                         src={data.track.logo}
                         alt={data.track.title}
@@ -355,7 +355,7 @@ export const TrackPlayer = ({
                     <h1 className="mt-8 text-2xl font-bold drops">
                         Video Ended
                     </h1>
-                    <div className="mt-6 flex gap-3">
+                    <div className="flex gap-3 mt-6">
                         <Button
                             size="lg"
                             onClick={onWatchAgain}
@@ -385,7 +385,7 @@ export const TrackPlayer = ({
                 <video
                     ref={videoRef}
                     src={videoSrc}
-                    className="w-screen h-screen object-cover"
+                    className="object-cover w-screen h-screen"
                     controls={false}
                     onPlay={() => setIsPlaying(true)}
                     onPause={() => setIsPlaying(false)}
@@ -395,17 +395,17 @@ export const TrackPlayer = ({
                 <div
                     className={cn("w-screen h-screen fixed top-0 left-0 z-10 bg-black/80 transition-opacity", !isPauseOverlay && "opacity-0")}
                 >
-                    <div className="w-full max-w-screen-2xl mx-auto p-4 flex flex-col justify-center h-full">
+                    <div className="flex flex-col justify-center w-full h-full p-4 mx-auto max-w-screen-2xl">
                         <p className="text-sm font-medium text-muted-foreground">You&apos;re watching</p>
                         <h2 className={cn("text-2xl font-semibold mt-1.5", isSerie && "text-lg")}>
                             {data.track.title}
                         </h2>
                         {isSerie && (
-                            <h2 className="text-2xl font-semibold mt-1">
+                            <h2 className="mt-1 text-2xl font-semibold">
                                 {data.currentEpisode?.title}
                             </h2>
                         )}
-                        <div className="flex items-center gap-x-4 mt-2">
+                        <div className="flex items-center mt-2 gap-x-4">
                             <span className="font-semibold">
                                 {data.track.year}
                             </span>
@@ -424,7 +424,7 @@ export const TrackPlayer = ({
                         Paused
                     </p>
                 </div>
-                <div className="fixed w-screen h-screen top-0 left-0 z-20" onClick={tooglePlay}>
+                <div className="fixed top-0 left-0 z-20 w-screen h-screen" onClick={tooglePlay}>
                 </div>
                 {!isEnded && (
                     <div className={cn("fixed flex flex-col gap-4 bottom-0 mb-12 px-8 w-full transition-opacity z-50", !isOverlayed && "opacity-0 scale-0")}>
@@ -436,7 +436,7 @@ export const TrackPlayer = ({
                         >
                             <ArrowLeftIcon className="size-4" />
                         </Button>
-                        <div className="flex items-center gap-4 w-full">
+                        <div className="flex items-center w-full gap-4">
                             <Slider
                                 className="flex-grow"
                                 value={[currentTime]}
@@ -447,7 +447,7 @@ export const TrackPlayer = ({
                                 }}
                                 disabled={!videoRef.current}
                             />
-                            <p className="text-sm font-semibold drop-shadow-md shrink-0 select-none">
+                            <p className="text-sm font-semibold select-none drop-shadow-md shrink-0">
                                 {formatSecondsTwo(fullTime - currentTime)}
                             </p>
                         </div>
@@ -477,7 +477,7 @@ export const TrackPlayer = ({
                                         </Button>
                                     </PopoverTrigger>
                                     <PopoverContent align="start" sideOffset={10}>
-                                        <h4 className="font-medium text-sm">Volume <span className="text-red-500 font-bold">({volume.toLocaleString("en-US")}%)</span></h4>
+                                        <h4 className="text-sm font-medium">Volume <span className="font-bold text-red-500">({volume.toLocaleString("en-US")}%)</span></h4>
                                         <Slider
                                             value={[volume]}
                                             min={0}
@@ -488,7 +488,7 @@ export const TrackPlayer = ({
                                     </PopoverContent>
                                 </Popover>
                             </div>
-                            <h4 className="font-medium select-none flex items-center gap-1 drop-shadow-md">
+                            <h4 className="flex items-center gap-1 font-medium select-none drop-shadow-md">
                                 {data.track.title}
                                 {isSerie && (
                                     <p className="text-neutral-300">
@@ -498,7 +498,7 @@ export const TrackPlayer = ({
                             </h4>
                             <div className="flex items-center gap-3">
                                 {(seasons || nextEpisode) && (
-                                    <div className="mr-3 flex items-center gap-3">
+                                    <div className="flex items-center gap-3 mr-3">
                                         {nextEpisode && (
                                             <TooltipProvider>
                                                 <Tooltip
@@ -544,7 +544,7 @@ export const TrackPlayer = ({
                                                     sideOffset={10}
                                                     className="w-[360px]"
                                                 >
-                                                    <h3 className="font-semibold text-sm">Seasons & Episodes</h3>
+                                                    <h3 className="text-sm font-semibold">Seasons & Episodes</h3>
                                                     <Accordion type="single" collapsible>
                                                         {seasons.map((season, key) => (
                                                             <AccordionItem value={`season-${key}`} key={key}>
@@ -589,7 +589,7 @@ export const TrackPlayer = ({
                                         </Button>
                                     </PopoverTrigger>
                                     <PopoverContent align="end" sideOffset={10}>
-                                        <h3 className="font-semibold text-sm">Playback speed</h3>
+                                        <h3 className="text-sm font-semibold">Playback speed</h3>
                                         <div className="flex gap-1.5 mt-2 flex-wrap">
                                             {speeds.map((speed) => (
                                                 <Button

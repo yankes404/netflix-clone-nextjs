@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export const StandaloneHeader = () => {
     return (
-        <header className="flex items-center justify-center py-8 w-full">
+        <header className="flex items-center justify-center w-full py-8">
             <Link
                 href="/"
             >

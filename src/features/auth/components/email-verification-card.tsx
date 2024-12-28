@@ -24,16 +24,16 @@ export const EmailVerificationCard = () => {
         <Card className="w-full lg:w-[450px]">
             <CardHeader>
                 {token ? (
-                    <div className="w-full flex flex-col gap-4">
-                        <div className="text-sm font-mono font-semibold flex items-center gap-2 w-full justify-center">
+                    <div className="flex flex-col w-full gap-4">
+                        <div className="flex items-center justify-center w-full gap-2 font-mono text-sm font-semibold">
                             <span className="shrink-0">Token:</span> <CopyValueButton value={token} />
                         </div>
                         {isPending ? (
-                            <LoaderCircleIcon className="size-4 animate-spin text-muted-foreground mx-auto" />
+                            <LoaderCircleIcon className="mx-auto size-4 animate-spin text-muted-foreground" />
                         ): data?.success ? (
-                                <div className="w-full flex flex-col items-center justify-center gap-2">
-                                    <div className="text-sm font-medium text-emerald-500 flex items-center">
-                                        <CheckCircleIcon className="size-4 mr-1" />
+                                <div className="flex flex-col items-center justify-center w-full gap-2">
+                                    <div className="flex items-center text-sm font-medium text-emerald-500">
+                                        <CheckCircleIcon className="mr-1 size-4" />
                                         <p>
                                             Email verified
                                         </p>
@@ -56,8 +56,8 @@ export const EmailVerificationCard = () => {
                                     </Button>
                                 </div>
                         ): (
-                            <div className="text-sm font-medium text-destructive flex items-center justify-center">
-                                <ExclamationTriangleIcon className="size-4 mr-1" />
+                            <div className="flex items-center justify-center text-sm font-medium text-destructive">
+                                <ExclamationTriangleIcon className="mr-1 size-4" />
                                 <p>
                                     {data?.error ?? "Something went wrong"}
                                 </p>

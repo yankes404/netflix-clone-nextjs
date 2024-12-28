@@ -74,9 +74,9 @@ export const SignUpCard = ()  => {
     return (
         <Card className="w-full lg:w-[500px] rounded-md">
             <CardHeader>
-                <CardTitle className="text-center text-xl">Create Account</CardTitle>
-                <CardDescription className="text-center text-xs">
-                    By register you agree to our <Link href="/privacy-policy"><span className="text-foreground hover:opacity-75 transition">Privacy Policy</span></Link> and <Link href="/terms-of-service"><span className="text-foreground hover:opacity-75 transition">Terms of Service</span></Link>.
+                <CardTitle className="text-xl text-center">Create Account</CardTitle>
+                <CardDescription className="text-xs text-center">
+                    By register you agree to our <Link href="/privacy-policy"><span className="transition text-foreground hover:opacity-75">Privacy Policy</span></Link> and <Link href="/terms-of-service"><span className="transition text-foreground hover:opacity-75">Terms of Service</span></Link>.
                 </CardDescription>
             </CardHeader>
             <div className="px-6">

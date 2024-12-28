@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 const EmailVerificationPage = () => {
     return (
         <Suspense>
-            <div className="w-full flex justify-center mt-8">
+            <div className="flex justify-center w-full mt-8">
                 <EmailVerificationCard />
             </div>
         </Suspense>

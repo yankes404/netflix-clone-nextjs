@@ -47,7 +47,7 @@ export const Header = () => {
 
     return (
         <header className={cn("w-screen mx-auto fixed top-0 z-50 left-0 transition-colors duration-300", top > 0 && "bg-background")}>
-            <div className="w-full max-w-screen-2xl mx-auto py-6 px-4 flex justify-between items-center gap-x-6">
+            <div className="flex items-center justify-between w-full px-4 py-6 mx-auto max-w-screen-2xl gap-x-6">
                 <div className="flex items-center gap-10">
                     <Link
                         href="/"
@@ -67,7 +67,7 @@ export const Header = () => {
                             className="sm:hidden"
                         />
                     </Link>
-                    <nav className="hidden sm:flex items-center gap-x-4">
+                    <nav className="items-center hidden sm:flex gap-x-4">
                         {links.map((link) => (
                             <Link
                                 key={link.href}

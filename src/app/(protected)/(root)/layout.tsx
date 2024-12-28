@@ -9,7 +9,7 @@ const ProtectedLayout = ({ children }: Props) => {
     return (
         <>
             <Header />
-            <div className="w-screen max-w-screen-2xl mx-auto pt-24 min-h-screen">
+            <div className="w-screen min-h-screen pt-24 mx-auto max-w-screen-2xl">
                 {children}
             </div>
             <Footer />

@@ -17,7 +17,7 @@ export const Hero = () => {
                 backgroundImage: `url(${data?.poster})`
             }}
         >
-            <div className="max-w-screen-2xl mx-auto w-full h-full pb-24 flex flex-col justify-end relative z-10">
+            <div className="relative z-10 flex flex-col justify-end w-full h-full pb-24 mx-auto max-w-screen-2xl">
                 {data && (
                     <>
                         <img
@@ -25,9 +25,9 @@ export const Hero = () => {
                             alt={data.title}
                             width={514}
                             height={126}
-                            className="hero-logo object-cover"
+                            className="object-cover hero-logo"
                         />
-                        <div className="mt-14 flex gap-3">
+                        <div className="flex gap-3 mt-14">
                             <Button
                                 size="lg"
                                 asChild
@@ -49,7 +49,7 @@ export const Hero = () => {
                     </div>
                 )}
             </div>
-            <div className="w-full h-1/5 absolute bottom-0 left-0 bg-gradient-to-t from-background" />
+            <div className="absolute bottom-0 left-0 w-full h-1/5 bg-gradient-to-t from-background" />
         </div>
     )
 }

@@ -23,7 +23,7 @@ export const CopyValueButton = ({
     return (
         <button
             onClick={onClick}
-            className="h-7 text-sm font-medium font-mono text-neutral-300 bg-neutral-800 p-1 rounded max-w-64 truncate transition hover:bg-neutral-700 disabled:pointer-events-none"
+            className="p-1 font-mono text-sm font-medium truncate transition rounded h-7 text-neutral-300 bg-neutral-800 max-w-64 hover:bg-neutral-700 disabled:pointer-events-none"
             disabled={disabled}
         >
             {value}

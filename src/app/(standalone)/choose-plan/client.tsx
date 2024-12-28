@@ -13,11 +13,11 @@ export const ChoosePlanClient = () => {
     }
 
     return (
-        <div className="w-full flex flex-col items-center justify-center mt-8">
-            <h1 className="text-center font-semibold text-2xl">Choose your plan</h1>
-            <p className="text-center text-sm text-muted-foreground mt-2">If you want to use Netflix, you have to select your plan</p>
-            <p className="text-neutral-400 text-xs font-medium mt-1 text-center">This application is only clone, so payments are in test mode. Don&apos;t worry, you won&apos;t be charged</p>
-            <div className="flex gap-4 mt-8 flex-col lg:flex-row w-full justify-center">
+        <div className="flex flex-col items-center justify-center w-full mt-8">
+            <h1 className="text-2xl font-semibold text-center">Choose your plan</h1>
+            <p className="mt-2 text-sm text-center text-muted-foreground">If you want to use Netflix, you have to select your plan</p>
+            <p className="mt-1 text-xs font-medium text-center text-neutral-400">This application is only clone, so payments are in test mode. Don&apos;t worry, you won&apos;t be charged</p>
+            <div className="flex flex-col justify-center w-full gap-4 mt-8 lg:flex-row">
                 <PlanCard
                     name={plans[SubscriptionType.BASIC].name}
                     price={plans[SubscriptionType.BASIC].price}

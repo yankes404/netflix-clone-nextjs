@@ -58,7 +58,7 @@ export const CreateProfileForm = () => {
         return (
             <Card className="w-full lg:w-[550px]">
                 <CardHeader>
-                    <LoaderCircleIcon className="size-4 animate-spin text-muted-foreground mx-auto" />
+                    <LoaderCircleIcon className="mx-auto size-4 animate-spin text-muted-foreground" />
                 </CardHeader>
             </Card>
         )
@@ -123,7 +123,7 @@ export const CreateProfileForm = () => {
                                 </FormItem>
                             )}
                         />
-                        <div className="w-full flex flex-wrap gap-2 mt-2">
+                        <div className="flex flex-wrap w-full gap-2 mt-2">
                             {!firstProfile && (
                                 <Button
                                     size="lg"
@@ -140,7 +140,7 @@ export const CreateProfileForm = () => {
                                 size="lg"
                                 variant="primary"
                                 type="submit"
-                                className="w-full lg:w-auto ml-auto"
+                                className="w-full ml-auto lg:w-auto"
                                 disabled={isPending}
                             >
                                 {isPending && (

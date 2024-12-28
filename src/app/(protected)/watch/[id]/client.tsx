@@ -57,7 +57,7 @@ export const WatchIdClient = ({ data }: Props) => {
     return (
         <>
             {(isPending || !videoSrc) ? (
-                <div className="w-screen h-screen grid place-items-center">
+                <div className="grid w-screen h-screen place-items-center">
                     <LoaderCircleIcon className="size-6 animate-spin text-muted-foreground" />
                 </div>
             ) : (

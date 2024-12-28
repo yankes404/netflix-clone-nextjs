@@ -26,7 +26,7 @@ const WatchIdPage = async ({ params, searchParams }: Props) => {
 
     if (!data) {
         return (
-            <div className="w-screen h-screen bg-background p-4 flex flex-col items-center justify-center gap-6">
+            <div className="flex flex-col items-center justify-center w-screen h-screen gap-6 p-4 bg-background">
                 <AlertTriangleIcon className="size-6" />
                 <p className="text-sm font-medium text-muted-foreground">Track not found</p>
                 <Button variant="foreground" asChild>

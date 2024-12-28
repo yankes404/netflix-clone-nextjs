@@ -14,9 +14,9 @@ export const ClientLanding = () => {
             }}
         >
             <div
-                className="h-screen w-full max-w-screen-2xl mx-auto px-4"
+                className="w-full h-screen px-4 mx-auto max-w-screen-2xl"
             >
-                <header className="flex items-center justify-between py-8 w-full">
+                <header className="flex items-center justify-between w-full py-8">
                     <Link
                         href="/"
                     >

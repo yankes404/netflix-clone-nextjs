@@ -19,7 +19,7 @@ export const PlanCard = ({
 }: Props) => {
     return (
         <div className="w-full lg:w-[325px] p-4 bg-neutral-900 rounded-md">
-            <div className="pb-3 mb-3 border-b flex flex-col gap-1">
+            <div className="flex flex-col gap-1 pb-3 mb-3 border-b">
                 <p className="text-sm font-semibold text-muted-foreground">{name}</p>
                 <strong className="text-lg font-bold">
                     ${(price / 100).toLocaleString("en-US")}<span className="text-xs text-muted-foreground">/month</span>
@@ -27,7 +27,7 @@ export const PlanCard = ({
             </div>
             <ul className="flex flex-col gap-1 pb-3 mb-3 border-b">
                 {features.map((feature, key) => (
-                    <li className="text-sm font-medium text-muted-foreground flex items-center" key={key}>
+                    <li className="flex items-center text-sm font-medium text-muted-foreground" key={key}>
                         <CircleCheckIcon className="size-3 text-red-500 mr-1.5" />
                         {feature}
                     </li>
