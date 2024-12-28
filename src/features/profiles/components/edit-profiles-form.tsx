@@ -3,7 +3,7 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useGetProfiles } from "../api/use-get-profiles";
 import { useState } from "react";
-import { LoaderCircleIcon, LoaderIcon } from "lucide-react";
+import { LoaderCircleIcon, LoaderIcon, PlusIcon } from "lucide-react";
 import { MiniProfile } from "../types";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -17,6 +17,7 @@ import { z } from "zod";
 import { createProfileSchema } from "../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUpdateProfile } from "../api/use-update-profile";
+import Link from "next/link";
 
 export const EditProfilesForm = () => {
     const { data: profiles, isLoading } = useGetProfiles();
@@ -62,33 +63,45 @@ export const EditProfilesForm = () => {
 
     return (
         <div className="w-full mt-6 flex flex-col gap-y-3">
-            <Select
-                value={profile?.id}
-                onValueChange={onProfileChange}
-            >
-                <SelectTrigger>
-                    <SelectValue placeholder="Select profile..." />
-                </SelectTrigger>
-                <SelectContent>
-                    {profiles?.map((profile) => (
-                        <SelectItem
-                            key={profile.id}
-                            value={profile.id}
-                        >
-                            <div className="flex items-center gap-1.5">
-                                <Image
-                                    src={getProfileImage(profile.image)}
-                                    alt={profile.name}
-                                    width={16}
-                                    height={16}
-                                    className="rounded-sm"
-                                />
-                                {profile.name}
-                            </div>
-                        </SelectItem>
-                    ))}
-                </SelectContent>
-            </Select>
+            <div className="flex gap-2">
+                <Select
+                    value={profile?.id}
+                    onValueChange={onProfileChange}
+                >
+                    <SelectTrigger>
+                        <SelectValue placeholder="Select profile..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {profiles?.map((profile) => (
+                            <SelectItem
+                                key={profile.id}
+                                value={profile.id}
+                            >
+                                <div className="flex items-center gap-1.5">
+                                    <Image
+                                        src={getProfileImage(profile.image)}
+                                        alt={profile.name}
+                                        width={16}
+                                        height={16}
+                                        className="rounded-sm"
+                                    />
+                                    {profile.name}
+                                </div>
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+                <Button
+                    size="icon"
+                    variant="foreground"
+                    asChild
+                    className="shrink-0"
+                >
+                    <Link href="/profiles/create">
+                        <PlusIcon className="size-4" />
+                    </Link>
+                </Button>
+            </div>
             {profile && (
                 <Card className="w-full">
                     <CardHeader>
