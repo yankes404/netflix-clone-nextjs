@@ -51,7 +51,7 @@ export const ClientLanding = () => {
                             size="sm"
                             asChild
                         >
-                            <Link href="/sign-ip">
+                            <Link href="/sign-up">
                                 Sign up
                             </Link>
                         </Button>
@@ -70,7 +70,7 @@ export const ClientLanding = () => {
                             size="lg"
                             asChild
                         >
-                            <Link href="/sign-ip">
+                            <Link href="/sign-up">
                                 Sign up
                             </Link>
                         </Button>

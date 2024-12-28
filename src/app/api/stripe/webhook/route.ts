@@ -11,6 +11,8 @@ const stripe = getStripe();
 export const POST = async (
     req: NextRequest
 ) => {
+    console.log("INVOKED STRIPE WEBHOOK");
+
     const body = await req.text();
     const signature = headers().get("Stripe-Signature") as string;
 
@@ -155,9 +157,7 @@ export const POST = async (
                 return NextResponse.json({ error: "Unhandled event type" }, { status: 400  })
         }
     } catch (error) {
-        if (process.env.NODE_ENV !== "production") {
-            console.error(error);
-        }
+        console.error(error);
 
         return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
     }
