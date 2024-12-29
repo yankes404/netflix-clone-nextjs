@@ -8,7 +8,7 @@ import { createVerificationToken } from "../auth/actions";
 
 const stripe = getStripe();
 
-export const createCheckout = async (plan: SubscriptionType) => sessionMiddleware(async ({ user }) => {
+export const createCheckout = async (plan: SubscriptionType, cancelUrl: string = process.env.NEXT_PUBLIC_APP_URL!) => sessionMiddleware(async ({ user }) => {
     if (!user.emailVerified) {
         await createVerificationToken(
             user.email,
@@ -33,7 +33,7 @@ export const createCheckout = async (plan: SubscriptionType) => sessionMiddlewar
             }
         ],
         success_url: `${process.env.NEXT_PUBLIC_APP_URL}/subscriptions/status?id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/subscriptions/error=true`,
+        cancel_url: cancelUrl,
         customer_email: user.email,
         locale: "en",
         metadata: {

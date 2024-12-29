@@ -1,4 +1,4 @@
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 
@@ -7,11 +7,13 @@ import { SubscriptionType } from "../types";
 
 export const useCreateCheckoutSession = () => {
     const router = useRouter();
+    const pathname = usePathname();
 
     const mutation = useMutation({
         mutationFn: async (
-            plan: SubscriptionType
-        ) => await createCheckout(plan),
+            plan: SubscriptionType,
+            cancelUrl: string = `${process.env.NEXT_PUBLIC_APP_URL}${pathname}`
+        ) => await createCheckout(plan, cancelUrl),
         onSuccess: (data) => {
             if ("url" in data && data.url) {
                 router.push(data.url);
